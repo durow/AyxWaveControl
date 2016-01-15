@@ -1,15 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
+﻿/*
+ * Author:durow
+ * Date:2016.01.15
+ * Description:Read the wavfile head information. 
+ */
+using System;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AyxWaveForm.Format
 {
     public class WavFile
     {
         #region Properties
+
+        /// <summary>
+        /// The name of the wav file.
+        /// </summary>
+        public string FileName { get; private set; }
 
         /// <summary>
         /// The tag of the file, always 'RIFF' (4 bytes)
@@ -47,7 +53,7 @@ namespace AyxWaveForm.Format
         public short SampleBit { get; private set; }
 
         /// <summary>
-        /// Data block offset
+        /// Data chunk offset
         /// </summary>
         public long DataOffset { get; private set; }
 
@@ -80,7 +86,7 @@ namespace AyxWaveForm.Format
         #region Methods
 
         /// <summary>
-        /// Read wav from filename
+        /// Read wavfile infomation.
         /// </summary>
         /// <param name="filename">The name of wav file</param>
         /// <returns></returns>
@@ -94,7 +100,11 @@ namespace AyxWaveForm.Format
             }
         }
 
-
+        /// <summary>
+        /// Read wavfile infomation.
+        /// </summary>
+        /// <param name="stream">The stream of the file</param>
+        /// <returns></returns>
         public static WavFile Read(Stream stream)
         {
             var file = new WavFile();
@@ -117,7 +127,7 @@ namespace AyxWaveForm.Format
                 file.SampleBit = reader.ReadInt16();
                 stream.Position = 36;
                 var data = string.Concat(reader.ReadChars(4));
-                while(data != "data")
+                while(data != "data") //find the start of data chunk
                 {
                     stream.Position -= 3;
                     data = string.Concat(reader.ReadChars(4));
@@ -131,7 +141,6 @@ namespace AyxWaveForm.Format
         }
 
         #endregion
-
 
     }
 
