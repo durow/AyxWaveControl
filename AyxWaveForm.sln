@@ -1,9 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.23107.0
+VisualStudioVersion = 14.0.24720.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AyxWaveForm", "AyxWaveForm\AyxWaveForm.csproj", "{76D5C696-6144-4753-9D9F-F5C4E58BD761}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test", "Test\Test.csproj", "{F30D2A09-EAA5-49FC-B9D3-EE2270FCEB79}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{76D5C696-6144-4753-9D9F-F5C4E58BD761}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{76D5C696-6144-4753-9D9F-F5C4E58BD761}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{76D5C696-6144-4753-9D9F-F5C4E58BD761}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F30D2A09-EAA5-49FC-B9D3-EE2270FCEB79}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F30D2A09-EAA5-49FC-B9D3-EE2270FCEB79}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F30D2A09-EAA5-49FC-B9D3-EE2270FCEB79}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F30D2A09-EAA5-49FC-B9D3-EE2270FCEB79}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
