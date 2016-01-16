@@ -3,8 +3,12 @@
  * Date:2016.01.15
  * Description:Read the wavfile head information. 
  */
+using AyxWaveForm.Model;
+using AyxWaveForm.Service;
 using System;
 using System.IO;
+using System.Threading.Tasks;
+using System.Windows.Media;
 
 namespace AyxWaveForm.Format
 {
@@ -72,6 +76,8 @@ namespace AyxWaveForm.Format
         /// </summary>
         public double TotalSeconds { get; private set; }
 
+        public WaveData CacheData { get; private set; }
+
         #endregion
 
         #region Constructor
@@ -137,7 +143,28 @@ namespace AyxWaveForm.Format
                 file.SampleNumber = file.DataSize * 8 / file.SampleBit;
                 file.TotalSeconds = (double)file.DataSize / (double)file.BytesPerSecond;
             }
+            file.ReadWaveData();
             return file;
+        }
+
+        private void ReadWaveData()
+        {
+            CacheData = DataReader.Read(this);
+        }
+
+        public ImageSource DrawChannel()
+        {
+            return null;
+        }
+
+        public ImageSource DrawLeftChannel()
+        {
+            return null;
+        }
+
+        public ImageSource DrawRightChannel()
+        {
+            return null;
         }
 
         #endregion

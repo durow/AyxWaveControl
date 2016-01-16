@@ -5,7 +5,7 @@ using System.Text;
 
 namespace AyxWaveForm.Model
 {
-    public class WaveDrawer
+    public class WaveData
     {
         public PixelInfo[] LeftChannel { get; private set; }
         public PixelInfo[] RightChannel { get; private set; }
