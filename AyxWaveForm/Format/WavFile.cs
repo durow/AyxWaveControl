@@ -76,7 +76,22 @@ namespace AyxWaveForm.Format
         /// </summary>
         public double TotalSeconds { get; private set; }
 
-        public WaveData CacheData { get; private set; }
+        /// <summary>
+        /// Wave data cache
+        /// </summary>
+        public WaveData CacheData { get; internal set; }
+
+        /// <summary>
+        /// pixels per second
+        /// </summary>
+        public int PixelPerSecond { get; set; }
+
+        public int MaxWidth { get; private set; }
+        public static int MinWidth { get; private set; }
+        /// <summary>
+        /// The miniumum of the wave scale
+        /// </summary>
+        public double MinScale { get; private set; }
 
         #endregion
 
@@ -87,6 +102,11 @@ namespace AyxWaveForm.Format
         /// </summary>
         private WavFile() { }
 
+        static WavFile()
+        {
+            MinWidth = 1920;
+        }
+
         #endregion
 
         #region Methods
@@ -96,13 +116,15 @@ namespace AyxWaveForm.Format
         /// </summary>
         /// <param name="filename">The name of wav file</param>
         /// <returns></returns>
-        public static WavFile Read(string filename)
+        public static WavFile Read(string filename,int pixelPerSecond = 300,string cacheFile="")
         {
             if (string.IsNullOrEmpty(filename))
                 return null;
             using (var stream = new FileStream(filename,FileMode.Open))
             {
-                return Read(stream);
+                var result = Read(stream,pixelPerSecond,cacheFile);
+                result.FileName = filename;
+                return result;
             }
         }
 
@@ -111,7 +133,7 @@ namespace AyxWaveForm.Format
         /// </summary>
         /// <param name="stream">The stream of the file</param>
         /// <returns></returns>
-        public static WavFile Read(Stream stream)
+        public static WavFile Read(Stream stream, int pixelPerSecond = 300,string cacheFile = "")
         {
             var file = new WavFile();
             using (var reader = new BinaryReader(stream))
@@ -140,21 +162,44 @@ namespace AyxWaveForm.Format
                 }
                 file.DataSize = reader.ReadInt32();
                 file.DataOffset = stream.Position;
-                file.SampleNumber = file.DataSize * 8 / file.SampleBit;
-                file.TotalSeconds = (double)file.DataSize / (double)file.BytesPerSecond;
+                file.PixelPerSecond = pixelPerSecond;
+
+                file.ComputeFileInfo();
+                file.ReadCacheData(stream);
             }
-            file.ReadWaveData();
             return file;
         }
 
-        private void ReadWaveData()
+        public void ReadCacheData(Stream stream=null,string cacheFile="")
         {
-            CacheData = DataReader.Read(this);
+            if (string.IsNullOrEmpty(cacheFile))
+            {
+                if (stream == null)
+                    CacheData = DataReader.Read(this);
+                else
+                    CacheData = DataReader.Read(this, stream);
+            }
+            else
+            {
+                CacheData = DataReader.FromCacheFile(this, cacheFile);
+            }
         }
 
-        public ImageSource DrawChannel()
+        private void ComputeFileInfo()
         {
-            return null;
+            SampleNumber = DataSize * 8 / SampleBit;
+            TotalSeconds = (double)DataSize / (double)BytesPerSecond;
+            MaxWidth = (int)TotalSeconds * PixelPerSecond + 1;
+            if (MaxWidth < MinWidth) MaxWidth = MinWidth;
+            MinScale = (double)MinWidth / (double)MaxWidth;
+        }
+
+        public ImageSource DrawChannel(double startPer, double scale, double width)
+        {
+            if (Channels == 1)
+                return WaveDrawer.Draw1Channel(CacheData.Channel, Brushes.CornflowerBlue);
+            else
+                return WaveDrawer.Draw2Channel(CacheData.LeftChannel, CacheData.RightChannel, Brushes.Green);
         }
 
         public ImageSource DrawLeftChannel()

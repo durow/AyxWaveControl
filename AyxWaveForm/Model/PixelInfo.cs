@@ -17,7 +17,11 @@ namespace AyxWaveForm.Model
         /// </summary>
         public short Max { get; private set; }
 
-        public PixelInfo(short a=0,short b=0)
+        public PixelInfo()
+        {
+            Min = Max = -1;
+        }
+        public PixelInfo(short a,short b)
         {
             if(a > b)
             {
@@ -28,6 +32,22 @@ namespace AyxWaveForm.Model
             {
                 Max = b;
                 Min = a;
+            }
+        }
+
+        public void Push(short x)
+        {
+            if (Min == -1)
+            {
+                Min = x;
+                Max = x;
+            }
+            else
+            {
+                if (x < Min)
+                    Min = x;
+                if (x > Max)
+                    Max = x;
             }
         }
     }

@@ -42,6 +42,7 @@ namespace Test
                     result += prop.Name + ":" + prop.GetValue(file) + "\n";
                 }
                 ResultText.Text = result;
+                WaveImage.Source = file.DrawChannel(0, 1, 0);
             }
             catch(Exception ex)
             {

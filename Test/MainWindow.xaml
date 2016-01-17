@@ -13,7 +13,8 @@
                     <WrapPanel DockPanel.Dock="Top">
                         <Button Content="打开Wav文件" Click="Button_Click"/>
                     </WrapPanel>
-                    <TextBox x:Name="ResultText"/>
+                    <TextBox x:Name="ResultText" DockPanel.Dock="Top" Height="200"/>
+                    <Image x:Name="WaveImage" Stretch="Fill" />
                 </DockPanel>
             </TabItem>
         </TabControl>

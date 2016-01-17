@@ -10,5 +10,12 @@ namespace AyxWaveForm.Model
         public PixelInfo[] LeftChannel { get; private set; }
         public PixelInfo[] RightChannel { get; private set; }
         public PixelInfo[] Channel { get; private set; }
+
+        public WaveData(PixelInfo[] channel = null,PixelInfo[] leftChannel = null,PixelInfo[] rightChannel = null)
+        {
+            Channel = channel;
+            LeftChannel = leftChannel;
+            RightChannel = rightChannel;
+        }
     }
 }
