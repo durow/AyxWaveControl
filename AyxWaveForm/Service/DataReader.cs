@@ -35,8 +35,8 @@ namespace AyxWaveForm.Service
             {
                 switch(file.SampleBit)
                 {
-                    case 16: return Read2Channels(stream, file.SampleNumber, file.MaxWidth,Read8Bit);
-                    case 32: return Read2Channels(stream, file.SampleNumber, file.MaxWidth,Read16Bit);
+                    case 8: return Read2Channels(stream, file.SampleNumber/2, file.MaxWidth,Read8Bit);
+                    case 16: return Read2Channels(stream, file.SampleNumber/2, file.MaxWidth,Read16Bit);
                     default: return null;
                 }
             }
@@ -59,8 +59,7 @@ namespace AyxWaveForm.Service
         {
             var l = new PixelInfo[width];
             var r = new PixelInfo[width];
-            var log = new int[width];
-
+            var samplesPerPixel = (double)sampleNumber / (double)width;
             using (var br = new BinaryReader(stream))
             {
                 var drawedSample = 0;
@@ -71,8 +70,7 @@ namespace AyxWaveForm.Service
                         drawSample = sampleNumber - drawedSample;
                     else
                     {
-                        var draw = (double)((sampleNumber - drawedSample) / (double)(width - i));
-                        drawSample = (int)Math.Round(draw);
+                        drawSample = (int)((i + 1) * samplesPerPixel - drawedSample);
                     }
                     var lInfo = new PixelInfo();
                     var rInfo = new PixelInfo();
@@ -80,20 +78,14 @@ namespace AyxWaveForm.Service
                     {
                         try
                         {
-                            var lTemp = reader(br);
-                            var lHeight = 256 - lTemp;
-                            lInfo.Push((short)lHeight);
-
-                            var rTemp = reader(br);
-                            var rHeight = 256 - rTemp;
-                            rInfo.Push((short)rHeight);
+                            lInfo.Push((short)(reader(br)/2));
+                            rInfo.Push((short)(reader(br)/2));
                         }
                         catch
                         {
                             drawedSample += j;
                         }
                     }
-                    log[i] = drawSample;
                     l[i] = lInfo;
                     r[i] = rInfo;
                     drawedSample += drawSample;
@@ -123,9 +115,7 @@ namespace AyxWaveForm.Service
                     {
                         try
                         {
-                            var temp = reader(br);
-                            var height = 256 - temp;
-                            pixInfo.Push((short)height);
+                            pixInfo.Push(reader(br));
                         }
                         catch
                         {
@@ -141,14 +131,39 @@ namespace AyxWaveForm.Service
 
         private static short Read8Bit(BinaryReader br)
         {
-            return (short)br.ReadByte();
+            var value = br.ReadByte();
+            return (short)(WavFile.MinHeight - value * WavFile.MinHeight / 256);
         }
 
         private static short Read16Bit(BinaryReader br)
         {
             var value = 32768 + br.ReadInt16();
-            return (short)(value*256 / 65536);
+            return (short)(WavFile.MinHeight - value*WavFile.MinHeight / 65536);
         }
-        
+
+        private static short[] Read2Channels16Bit(BinaryReader br)
+        {
+            var left = Read16Bit(br);
+            left = (short)((WavFile.MinHeight - left) / 2);
+            var right = Read16Bit(br);
+            right = (short)((WavFile.MinHeight - right) / 2);
+
+            var result = new short[2];
+            result[0] = left;
+            result[1] = right;
+            return result;
+        }
+        private static short[] Read2Channels8Bit(BinaryReader br)
+        {
+            var left = Read8Bit(br);
+            left = (short)((WavFile.MinHeight - left) / 2);
+            var right = Read8Bit(br);
+            right = (short)((WavFile.MinHeight - right) / 2);
+
+            var result = new short[2];
+            result[0] = left;
+            result[1] = right;
+            return result;
+        }
     }
 }

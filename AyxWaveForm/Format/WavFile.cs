@@ -88,6 +88,7 @@ namespace AyxWaveForm.Format
 
         public int MaxWidth { get; private set; }
         public static int MinWidth { get; private set; }
+        public static int MinHeight { get; private set; }
         /// <summary>
         /// The miniumum of the wave scale
         /// </summary>
@@ -105,6 +106,7 @@ namespace AyxWaveForm.Format
         static WavFile()
         {
             MinWidth = 1920;
+            MinHeight = 1080;
         }
 
         #endregion
@@ -199,7 +201,7 @@ namespace AyxWaveForm.Format
             if (Channels == 1)
                 return WaveDrawer.Draw1Channel(CacheData.Channel, Brushes.Lime,0,1);
             else
-                return WaveDrawer.Draw2Channel(CacheData.LeftChannel, CacheData.RightChannel, Brushes.Green,0,1);
+                return WaveDrawer.Draw2Channel(CacheData.LeftChannel, CacheData.RightChannel, Brushes.Lime,0,1);
         }
 
         public ImageSource DrawLeftChannel()
