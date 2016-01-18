@@ -17,16 +17,41 @@ namespace AyxWaveForm.Service
 {
     public static class WaveDrawer
     {
-        public static ImageSource Draw1Channel(PixelInfo[] info,Brush waveBrush)
+        public static ImageSource Draw1Channel(PixelInfo[] info,Brush waveBrush,double startPer, double scale)
         {
+            if (info.Length < WavFile.MinWidth)
+                return null;
+            var startPos = (int)(info.Length * startPer);
+            var sampleNumber = (int)(info.Length * scale);
+            if (startPos + sampleNumber > info.Length)
+                startPos = info.Length - sampleNumber;
+            var samplesPerPixel = (double)sampleNumber / (double)WavFile.MinWidth;
+
             DrawingVisual dv = new DrawingVisual();
             var dc = dv.RenderOpen();
             var pen = new Pen(waveBrush, 1);
             pen.Freeze();
-            for (int i = 1; i <= info.Length; i++)
+
+            //draw background
+            dc.DrawRectangle(Brushes.Black, null, new Rect(0, 0, WavFile.MinWidth, 256));
+            //draw wave
+            var drawedSample = 0;
+            for (int i = 0; i < WavFile.MinWidth; i++)
             {
-                var tempInfo = info[i - 1];
+                var drawSample = 0;
+                if (i == WavFile.MinWidth - 1)
+                    drawSample = sampleNumber - drawedSample;
+                else
+                {
+                    drawSample = (int)((i + 1) * samplesPerPixel - drawedSample);
+                }
+                var tempInfo = new PixelInfo();
+                for (int j = 0; j < drawSample; j++)
+                {
+                    tempInfo.Push(info[startPos + drawedSample + j]);
+                }
                 dc.DrawLine(pen, new Point(i, tempInfo.Min), new Point(i, tempInfo.Max));
+                drawedSample += drawSample;
             }
             dc.Close();
             var bmp = new RenderTargetBitmap(WavFile.MinWidth, 256, 0, 0, PixelFormats.Default);
@@ -34,19 +59,44 @@ namespace AyxWaveForm.Service
             return bmp;
         }
 
-        public static ImageSource Draw2Channel(PixelInfo[] lInfo, PixelInfo[] rInfo, Brush waveBrush)
+        public static ImageSource Draw2Channel(PixelInfo[] lInfo, PixelInfo[] rInfo, Brush waveBrush, double startPer, double scale)
         {
+            if (lInfo.Length < WavFile.MinWidth)
+                return null;
+            var startPos = (int)(lInfo.Length * startPer);
+            var sampleNumber = (int)(lInfo.Length * scale);
+            if (startPos + sampleNumber > lInfo.Length)
+                startPos = lInfo.Length - sampleNumber;
+            var samplesPerPixel = (double)sampleNumber / (double)WavFile.MinWidth;
+
             DrawingVisual dv = new DrawingVisual();
             var dc = dv.RenderOpen();
             var pen = new Pen(waveBrush, 1);
             pen.Freeze();
-            for (int i = 1; i <= lInfo.Length; i++)
-            {
-                var templInfo = lInfo[i - 1];
-                dc.DrawLine(pen, new Point(i, templInfo.Min), new Point(i, templInfo.Max));
 
-                var temprInfo = rInfo[i - 1];
-                dc.DrawLine(pen, new Point(i, 257 + temprInfo.Min), new Point(i, 257 + temprInfo.Max));
+            //draw background
+            dc.DrawRectangle(Brushes.Black, null, new Rect(0, 0, WavFile.MinWidth, 514));
+            //draw wave
+            var drawedSample = 0;
+            for (int i = 0; i < WavFile.MinWidth; i++)
+            {
+                var drawSample = 0;
+                if (i == WavFile.MinWidth - 1)
+                    drawSample = sampleNumber - drawedSample;
+                else
+                {
+                    drawSample = (int)((i + 1) * samplesPerPixel - drawedSample);
+                }
+                var lTemp = new PixelInfo();
+                var rTemp = new PixelInfo();
+                for (int j = 0; j < drawSample; j++)
+                {
+                    lTemp.Push(lInfo[startPos + drawedSample + j]);
+                    rTemp.Push(rInfo[startPos + drawedSample + j]);
+                }
+                dc.DrawLine(pen, new Point(i + 1, lTemp.Min), new Point(i + 1, lTemp.Max));
+                dc.DrawLine(pen, new Point(i + 1, rTemp.Min + 257), new Point(i + 1, rTemp.Max + 257));
+                drawedSample += drawSample;
             }
             dc.Close();
             var bmp = new RenderTargetBitmap(WavFile.MinWidth, 514, 0, 0, PixelFormats.Default);

@@ -105,7 +105,7 @@ namespace AyxWaveForm.Service
         private static WaveData Read1Channel(Stream stream,int sampleNumber,int width,Func<BinaryReader,short> reader)
         {
             var result = new PixelInfo[width];
-            var log = new int[width];
+            var samplesPerPixel = (double)sampleNumber / (double)width;
             using (var br = new BinaryReader(stream))
             {
                 var drawedSample = 0;
@@ -116,10 +116,8 @@ namespace AyxWaveForm.Service
                         drawSample = sampleNumber - drawedSample;
                     else
                     {
-                        var draw = (double)((sampleNumber - drawedSample) / (double)(width - i));
-                        drawSample = (int)Math.Round(draw);
+                        drawSample = (int)((i+1)*samplesPerPixel - drawedSample);
                     }
-                    log[i] = drawSample;
                     var pixInfo = new PixelInfo();
                     for (int j = 0; j < drawSample; j++)
                     {

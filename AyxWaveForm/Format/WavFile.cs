@@ -197,9 +197,9 @@ namespace AyxWaveForm.Format
         public ImageSource DrawChannel(double startPer, double scale, double width)
         {
             if (Channels == 1)
-                return WaveDrawer.Draw1Channel(CacheData.Channel, Brushes.CornflowerBlue);
+                return WaveDrawer.Draw1Channel(CacheData.Channel, Brushes.Lime,0,1);
             else
-                return WaveDrawer.Draw2Channel(CacheData.LeftChannel, CacheData.RightChannel, Brushes.Green);
+                return WaveDrawer.Draw2Channel(CacheData.LeftChannel, CacheData.RightChannel, Brushes.Green,0,1);
         }
 
         public ImageSource DrawLeftChannel()

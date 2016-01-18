@@ -50,5 +50,21 @@ namespace AyxWaveForm.Model
                     Max = x;
             }
         }
+
+        public void Push(PixelInfo info)
+        {
+            if(Min == -1)
+            {
+                Min = info.Min;
+                Max = info.Max;
+            }
+            else
+            {
+                if (info.Min < Min)
+                    Min = info.Min;
+                if (info.Max > Max)
+                    Max = info.Max;
+            }
+        }
     }
 }
