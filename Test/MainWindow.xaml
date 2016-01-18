@@ -19,8 +19,9 @@
                 </DockPanel>
             </TabItem>
             <TabItem Header="SliderTest">
-                <DockPanel>
-                    <con:WaveSlider Height="30" DockPanel.Dock="Top" Background="Black"/>
+                <DockPanel MouseWheel="DockPanel_MouseWheel">
+                    <con:WaveSlider x:Name="TestSlider" Height="30" DockPanel.Dock="Top" 
+                                    Background="Black" SliderMoved="TestSlider_SliderMoved" MinScale="0.1"/>
                     <TextBox x:Name="ScrollInfo"/>
                 </DockPanel>
             </TabItem>

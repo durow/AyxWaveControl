@@ -68,6 +68,8 @@
     </Compile>
     <Compile Include="Format\WavFile.cs" />
     <Compile Include="Model\ColorInfo.cs" />
+    <Compile Include="Model\EventArgs.cs" />
+    <Compile Include="Model\SliderStyle.cs" />
     <Compile Include="Model\WaveData.cs" />
     <Compile Include="Service\DataReader.cs" />
     <Compile Include="Model\PixelInfo.cs" />

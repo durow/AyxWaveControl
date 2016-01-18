@@ -4,22 +4,23 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:AyxWaveForm.Control"
-             mc:Ignorable="d" 
-             d:DesignHeight="59.355" d:DesignWidth="523.226">
+             mc:Ignorable="d" Loaded="UserControl_Loaded" x:Name="Self"
+             d:DesignHeight="59.355" d:DesignWidth="523.226" SizeChanged="Self_SizeChanged">
     <UserControl.Resources>
         <Style x:Key="MyThumbStyle" TargetType="Thumb">
             <Setter Property="Opacity" Value="0.5"/>
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="Thumb">
-                        <Border Name="ThumbBorder" Background="CornflowerBlue"/>
+                        <Border Name="ThumbBorder" Background="{Binding ThumbBackground}"
+                                Width="{Binding ThumbWidth}"/>
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
             <Style.Triggers>
                 <Trigger Property="IsMouseOver" Value="True">
                     <Trigger.Setters>
-                        <Setter Property="Opacity" Value="0.7"/>
+                        <Setter Property="Opacity" Value="0.6"/>
                     </Trigger.Setters>
                 </Trigger>
             </Style.Triggers>
@@ -44,7 +45,11 @@
     </UserControl.Resources>
     <Grid>
         <Border BorderThickness="0">
-            <Slider x:Name="MySlider" Minimum="0" Maximum="1" Style="{StaticResource MySliderStyle}"/>
+            <Slider x:Name="MySlider" Minimum="0" Maximum="1" 
+                    DataContext="{Binding ElementName=Self, Path=SliderStyle}"
+                    Value="{Binding ElementName=Self, Path=SliderValue}"
+                    Style="{StaticResource MySliderStyle}" 
+                    ValueChanged="MySlider_ValueChanged"/>
         </Border>
     </Grid>
 </UserControl>

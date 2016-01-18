@@ -55,5 +55,16 @@ namespace Test
         {
             //ScrollInfo.Text = TestScroll.Value + "\n";
         }
+
+        private void TestSlider_SliderMoved(object sender, AyxWaveForm.Model.SliderMovedEventArgs e)
+        {
+            ScrollInfo.Text = TestSlider.SliderValue + "\n" + e.StartPercent;
+        }
+
+        private void DockPanel_MouseWheel(object sender, MouseWheelEventArgs e)
+        {
+            var p = e.GetPosition(this).X/this.ActualWidth;
+            TestSlider.SetScale(e.Delta, p);
+        }
     }
 }
