@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Test"
+        xmlns:con="clr-namespace:AyxWaveForm.Control;assembly=AyxWaveForm"
         mc:Ignorable="d" WindowStartupLocation="CenterScreen"
         Title="MainWindow" Height="433" Width="1185">
     <Grid>
@@ -15,6 +16,12 @@
                     </WrapPanel>
                     <TextBox x:Name="ResultText" DockPanel.Dock="Top" Height="200"/>
                     <Image x:Name="WaveImage" Stretch="Fill"/>
+                </DockPanel>
+            </TabItem>
+            <TabItem Header="SliderTest">
+                <DockPanel>
+                    <con:WaveSlider Height="30" DockPanel.Dock="Top" Background="Black"/>
+                    <TextBox x:Name="ScrollInfo"/>
                 </DockPanel>
             </TabItem>
         </TabControl>

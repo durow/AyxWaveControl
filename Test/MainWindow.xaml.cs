@@ -50,5 +50,10 @@ namespace Test
                 ResultText.Text = "";
             }
         }
+
+        private void TestScroll_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            //ScrollInfo.Text = TestScroll.Value + "\n";
+        }
     }
 }
