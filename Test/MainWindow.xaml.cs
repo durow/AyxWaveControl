@@ -58,7 +58,9 @@ namespace Test
 
         private void TestSlider_SliderMoved(object sender, AyxWaveForm.Model.SliderMovedEventArgs e)
         {
-            ScrollInfo.Text = TestSlider.SliderValue + "\n" + e.StartPercent;
+            ScrollInfo.Text = "Value: " + TestSlider.SliderValue + "\n" +
+                                      "StartPer: "+ e.StartPercent + "\n" +
+                                      "Scale: " + e.Scale;
         }
 
         private void DockPanel_MouseWheel(object sender, MouseWheelEventArgs e)

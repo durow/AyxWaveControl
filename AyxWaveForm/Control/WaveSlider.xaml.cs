@@ -82,9 +82,22 @@ namespace AyxWaveForm.Control
                 if (Scale < MinScale) Scale = MinScale;
             }
             if (Scale == 1)
-                SliderValue = 1;
+            {
+                MySlider.Value = 1;
+                MySlider_ValueChanged(null, null);
+            }
             else
-                SliderValue = (StartPercent + (oldScale - Scale) * mousePer) / (1 - Scale);
+            {
+                var newValue = (StartPercent + (oldScale - Scale) * mousePer) / (1 - Scale);
+                if (newValue < 0)
+                    newValue = 0;
+                if (newValue > 1)
+                    newValue = 1;
+                if (newValue != MySlider.Value)
+                    MySlider.Value = newValue;
+                else
+                    MySlider_ValueChanged(null, null);
+            }
             Self_SizeChanged(null, null);
         }
 
@@ -97,7 +110,7 @@ namespace AyxWaveForm.Control
         {
             StartPercent = (1 - Scale) * MySlider.Value;
             if(SliderMoved != null)
-                SliderMoved(this, new SliderMovedEventArgs(StartPercent));
+                SliderMoved(this, new SliderMovedEventArgs(StartPercent,Scale));
         }
 
         private void Self_SizeChanged(object sender, SizeChangedEventArgs e)
