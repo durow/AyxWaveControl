@@ -14,6 +14,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Timers;
+using AyxWaveForm.Model;
 
 namespace AyxWaveForm
 {
@@ -22,6 +23,35 @@ namespace AyxWaveForm
     /// </summary>
     public partial class WaveForm : UserControl
     {
+
+        #region DependencyProperties
+
+
+        public WaveStyle WaveStyle
+        {
+            get { return (WaveStyle)GetValue(WaveStyleProperty); }
+            set { SetValue(WaveStyleProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for WaveStyle.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty WaveStyleProperty =
+            DependencyProperty.Register("WaveStyle", typeof(WaveStyle), typeof(WaveForm), new PropertyMetadata(null));
+
+
+
+        public SliderStyle SliderStyle
+        {
+            get { return (SliderStyle)GetValue(SliderStyleProperty); }
+            set { SetValue(SliderStyleProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for SliderStyle.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty SliderStyleProperty =
+            DependencyProperty.Register("SliderStyle", typeof(SliderStyle), typeof(WaveForm), new PropertyMetadata(null));
+
+
+
+        #endregion
 
         #region Fields
         private Timer playingTimer = new Timer(50);

@@ -66,6 +66,7 @@
     <Compile Include="Control\WaveSlider.xaml.cs">
       <DependentUpon>WaveSlider.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Converter\MyConverter.cs" />
     <Compile Include="Format\WavFile.cs" />
     <Compile Include="Model\ColorInfo.cs" />
     <Compile Include="Model\EventArgs.cs" />

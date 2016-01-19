@@ -5,12 +5,14 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:AyxWaveForm"
              xmlns:con="clr-namespace:AyxWaveForm.Control"
+             xmlns:converter="clr-namespace:AyxWaveForm.Converter"
              mc:Ignorable="d" x:Name="Self"
              d:DesignHeight="132.258" d:DesignWidth="767.419">
     <UserControl.Resources>
         <Style TargetType="Image">
             <Setter Property="Stretch" Value="Fill"/>
         </Style>
+        <converter:BoolToVisible x:Key="BoolVisibleConverter"/>
     </UserControl.Resources>
     
     <Border x:Name="MainBorder" MouseWheel="MainBorder_MouseWheel" MouseRightButtonDown="MainBorder_MouseRightButtonDown">
@@ -23,6 +25,8 @@
             <Border x:Name="WaveBorder" SizeChanged="WaveBorder_SizeChanged" 
                     Background="Black">
                 <Grid x:Name="MainGrid" MouseLeftButtonDown="MainGrid_MouseLeftButtonDown">
+                    <Grid x:Name="WaveGrid" 
+                          Visibility="{Binding ElementName=Self, Path=WaveStyle.ShowGrid, Converter={StaticResource BoolVisibleConverter}}"/>
                     <Grid x:Name="SingleChannelGrid">
                         <Image x:Name="SingleChannelImage"/>
                     </Grid>
@@ -34,6 +38,9 @@
                         </Grid.RowDefinitions>
                         <Image Grid.Row="0" x:Name="LeftChannelImage"/>
                         <Image Grid.Row="2" x:Name="RightChannelImage"/>
+                    </Grid>
+                    <Grid x:Name="MiddleLineGrid">
+                        <Line x:Name="MiddleLine" Stroke="Green"/>
                     </Grid>
                     <Line x:Name="TrackLine" Visibility="Collapsed" Stroke="Red" StrokeThickness="1"/>
                     <Line x:Name="PosLine" Y1="0" Visibility="Collapsed" Stroke='Yellow' StrokeThickness="1"/>
