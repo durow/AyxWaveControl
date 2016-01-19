@@ -42,7 +42,7 @@ namespace Test
                     result += prop.Name + ":" + prop.GetValue(file) + "\n";
                 }
                 ResultText.Text = result;
-                WaveImage.Source = file.DrawChannel(0, 1);
+                //WaveImage.Source = file.DrawChannel(0, 1);
             }
             catch(Exception ex)
             {
@@ -58,7 +58,7 @@ namespace Test
 
         private void TestSlider_SliderMoved(object sender, AyxWaveForm.Model.SliderMovedEventArgs e)
         {
-            ScrollInfo.Text = "Value: " + TestSlider.SliderValue + "\n" +
+            ScrollInfo.Text = 
                                       "StartPer: "+ e.StartPercent + "\n" +
                                       "Scale: " + e.Scale;
         }

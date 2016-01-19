@@ -169,5 +169,22 @@ namespace AyxWaveForm.Model
 
 
         #endregion
+
+        public static WaveStyle Default
+        {
+            get
+            {
+                return new WaveStyle
+                {
+                    WaveBackground = Brushes.Black,
+                    WaveBrush = Brushes.Lime,
+                    PosLineBrush = Brushes.Yellow,
+                    TrackLineBrush = Brushes.Pink,
+                    MiddleLineBrush = Brushes.Green,
+                    GridBrush = Brushes.DarkGreen,
+                    TimeTextBrush = Brushes.White,
+                };
+            }
+        }
     }
 }
