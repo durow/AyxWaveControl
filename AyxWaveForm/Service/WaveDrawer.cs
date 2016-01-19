@@ -17,9 +17,10 @@ namespace AyxWaveForm.Service
 {
     public static class WaveDrawer
     {
-        public static ImageSource Draw1Channel(PixelInfo[] info,Brush waveBrush,double startPer, double scale,double height=-1)
+        public static ImageSource Draw1Channel(PixelInfo[] info,Brush waveBrush,double startPer, double scale,double width, double height=-1)
         {
-            if (info.Length < WavFile.MinWidth)
+            if (width <= 0) return null;
+            if (info.Length < width)
                 return null;
             if (height == -1)
                 height = WavFile.MinHeight;
@@ -27,23 +28,20 @@ namespace AyxWaveForm.Service
             var sampleNumber = (int)(info.Length * scale);
             if (startPos + sampleNumber > info.Length)
                 startPos = info.Length - sampleNumber;
-            var samplesPerPixel = (double)sampleNumber / (double)WavFile.MinWidth;
+            var samplesPerPixel = (double)sampleNumber / width;
 
             DrawingVisual dv = new DrawingVisual();
             var dc = dv.RenderOpen();
             var pen = new Pen(waveBrush, 1);
             
             pen.Freeze();
-
-            //draw background
-            dc.DrawRectangle(Brushes.Black, null, new Rect(0, 0, WavFile.MinWidth, height));
             
             //draw wave
             var drawedSample = 0;
-            for (int i = 0; i < WavFile.MinWidth; i++)
+            for (int i = 0; i < width; i++)
             {
                 var drawSample = 0;
-                if (i == WavFile.MinWidth - 1)
+                if (i == width - 1)
                     drawSample = sampleNumber - drawedSample;
                 else
                 {
@@ -65,21 +63,23 @@ namespace AyxWaveForm.Service
                 drawedSample += drawSample;
             }
             dc.Close();
-            var bmp = new RenderTargetBitmap(WavFile.MinWidth, (int)height, 0, 0, PixelFormats.Default);
+            var bmp = new RenderTargetBitmap((int)width, (int)height, 0, 0, PixelFormats.Default);
             bmp.Render(dv);
             return bmp;
         }
 
-        public static ImageSource Draw2Channel(PixelInfo[] lInfo, PixelInfo[] rInfo, Brush waveBrush, double startPer, double scale, double height=-1)
+        public static ImageSource Draw2Channel(PixelInfo[] lInfo, PixelInfo[] rInfo, Brush waveBrush, double startPer, double scale, double width, double height=-1)
         {
-            if (lInfo.Length < WavFile.MinWidth)
+            if (width <= 0) return null;
+
+            if (lInfo.Length < width)
                 return null;
             
             var startPos = (int)(lInfo.Length * startPer);
             var sampleNumber = (int)(lInfo.Length * scale);
             if (startPos + sampleNumber > lInfo.Length)
                 startPos = lInfo.Length - sampleNumber;
-            var samplesPerPixel = (double)sampleNumber / (double)WavFile.MinWidth;
+            var samplesPerPixel = (double)sampleNumber / width;
 
             if (height == -1)
                 height = WavFile.MinHeight;
@@ -90,14 +90,12 @@ namespace AyxWaveForm.Service
             var pen = new Pen(waveBrush, 1);
             pen.Freeze();
 
-            //draw background
-            dc.DrawRectangle(Brushes.Black, null, new Rect(0, 0, WavFile.MinWidth, height));
             //draw wave
             var drawedSample = 0;
-            for (int i = 0; i < WavFile.MinWidth; i++)
+            for (int i = 0; i < width; i++)
             {
                 var drawSample = 0;
-                if (i == WavFile.MinWidth - 1)
+                if (i == width - 1)
                     drawSample = sampleNumber - drawedSample;
                 else
                 {
@@ -126,9 +124,26 @@ namespace AyxWaveForm.Service
                 drawedSample += drawSample;
             }
             dc.Close();
-            var bmp = new RenderTargetBitmap(WavFile.MinWidth, (int)height, 0, 0, PixelFormats.Default);
+            var bmp = new RenderTargetBitmap((int)width, (int)height, 0, 0, PixelFormats.Default);
             bmp.Render(dv);
             return bmp;
+        }
+
+        public static ImageSource DrawSimple(WaveData data,Brush waveBrush)
+        {
+            if(data.Channel != null)
+            {
+                var img = Draw1Channel(data.Channel, waveBrush, 0, 1, WavFile.MinWidth);
+                img.Freeze();
+                return img;
+            }
+            else if(data.LeftChannel!=null && data.RightChannel!=null)
+            {
+                var img = Draw2Channel(data.LeftChannel, data.RightChannel, waveBrush, 0, 1, WavFile.MinWidth);
+                img.Freeze();
+                return img;
+            }
+            return null;
         }
 
         private static double ScaleToHeight(double value,double height)

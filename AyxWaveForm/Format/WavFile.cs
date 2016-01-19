@@ -118,7 +118,7 @@ namespace AyxWaveForm.Format
         /// </summary>
         /// <param name="filename">The name of wav file</param>
         /// <returns></returns>
-        public static WavFile Read(string filename,int pixelPerSecond = 300,string cacheFile="")
+        public static WavFile Read(string filename,int pixelPerSecond = 200,string cacheFile="")
         {
             if (string.IsNullOrEmpty(filename))
                 return null;
@@ -135,7 +135,7 @@ namespace AyxWaveForm.Format
         /// </summary>
         /// <param name="stream">The stream of the file</param>
         /// <returns></returns>
-        public static WavFile Read(Stream stream, int pixelPerSecond = 300,string cacheFile = "")
+        public static WavFile Read(Stream stream, int pixelPerSecond = 200,string cacheFile = "")
         {
             var file = new WavFile();
             using (var reader = new BinaryReader(stream))
@@ -196,20 +196,12 @@ namespace AyxWaveForm.Format
             MinScale = (double)MinWidth / (double)MaxWidth;
         }
 
-        public ImageSource DrawChannel(double startPer, double scale)
+        public ImageSource DrawChannel(double startPer, double scale, double width,double height)
         {
             if (Channels == 1)
-                return WaveDrawer.Draw1Channel(CacheData.Channel, Brushes.Lime,startPer,scale);
+                return WaveDrawer.Draw1Channel(CacheData.Channel, Brushes.Lime,startPer,scale,width,height);
             else
-                return WaveDrawer.Draw2Channel(CacheData.LeftChannel, CacheData.RightChannel, Brushes.Lime,startPer,scale);
-        }
-
-        public ImageSource DrawSimple(double height)
-        {
-            if (Channels == 1)
-                return WaveDrawer.Draw1Channel(CacheData.Channel, Brushes.Lime, 0, 1,height);
-            else
-                return WaveDrawer.Draw2Channel(CacheData.LeftChannel, CacheData.RightChannel, Brushes.Lime, 0, 1,height);
+                return WaveDrawer.Draw2Channel(CacheData.LeftChannel, CacheData.RightChannel, Brushes.Lime,startPer,scale,width,height);
         }
 
         public ImageSource DrawLeftChannel()
@@ -220,6 +212,11 @@ namespace AyxWaveForm.Format
         public ImageSource DrawRightChannel()
         {
             return null;
+        }
+
+        public ImageSource DrawSimple(Brush waveBrush)
+        {
+            return WaveDrawer.DrawSimple(CacheData, waveBrush);
         }
 
         #endregion

@@ -22,6 +22,7 @@ namespace AyxWaveForm.Control
     /// </summary>
     public partial class WaveSlider : UserControl
     {
+        private bool isReseting = false;
         #region Properties
         public double Scale { get; private set; }
         public double StartPercent { get; private set; }
@@ -48,8 +49,7 @@ namespace AyxWaveForm.Control
         {
             InitializeComponent();
             SliderStyle = new SliderStyle();
-            Scale = 1;
-            MySlider.Value = 1;
+            Reset();
         }
 
         public void SetScale(double delta, double mousePer)
@@ -58,13 +58,13 @@ namespace AyxWaveForm.Control
             if (delta < 0)
             {
                 if (Scale == 1) return;
-                Scale += 0.05;
+                Scale += 0.1;
                 if (Scale > 1) Scale = 1;
             }
             else if (delta > 0)
             {
                 if (Scale == MinScale) return;
-                Scale -= 0.05;
+                Scale -= 0.1;
                 if (Scale < MinScale) Scale = MinScale;
             }
             if (Scale == 1)
@@ -86,7 +86,15 @@ namespace AyxWaveForm.Control
             }
             Self_SizeChanged(null, null);
         }
-
+        public void Reset()
+        {
+            isReseting = true;
+            Scale = 1;
+            StartPercent = 0;
+            MySlider.Value = 1;
+            Self_SizeChanged(null, null);
+            isReseting = false;
+        }
         public void SetImage(ImageSource img)
         {
             SliderImage.Source = img;
@@ -99,7 +107,7 @@ namespace AyxWaveForm.Control
         private void MySlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
             StartPercent = (1 - Scale) * MySlider.Value;
-            if(SliderMoved != null)
+            if(!isReseting && SliderMoved != null)
                 SliderMoved(this, new SliderMovedEventArgs(StartPercent,Scale));
         }
 

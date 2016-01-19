@@ -12,14 +12,17 @@
             <Setter Property="Stretch" Value="Fill"/>
         </Style>
     </UserControl.Resources>
-    <Border x:Name="MainBorder" MouseWheel="MainBorder_MouseWheel">
+    
+    <Border x:Name="MainBorder" MouseWheel="MainBorder_MouseWheel" MouseRightButtonDown="MainBorder_MouseRightButtonDown">
         <DockPanel>
-            <Border x:Name="SliderBorder" DockPanel.Dock="Top">
+            <MediaElement x:Name="MyPlayer" LoadedBehavior="Manual" Visibility="Collapsed" UnloadedBehavior="Close" MediaEnded="MyPlayer_MediaEnded"/>
+            <Border x:Name="SliderBorder" DockPanel.Dock="Top" Background="Black">
                 <con:WaveSlider x:Name="MainSlider" Height="30" DockPanel.Dock="Top" 
                                 SliderMoved="MainSlider_SliderMoved"/>
             </Border>
-            <Border x:Name="WaveBorder">
-                <Grid x:Name="MainGrid">
+            <Border x:Name="WaveBorder" SizeChanged="WaveBorder_SizeChanged" 
+                    Background="Black">
+                <Grid x:Name="MainGrid" MouseLeftButtonDown="MainGrid_MouseLeftButtonDown">
                     <Grid x:Name="SingleChannelGrid">
                         <Image x:Name="SingleChannelImage"/>
                     </Grid>
@@ -32,9 +35,9 @@
                         <Image Grid.Row="0" x:Name="LeftChannelImage"/>
                         <Image Grid.Row="2" x:Name="RightChannelImage"/>
                     </Grid>
-                    <Line x:Name="PosLine"/>
-                    <Line x:Name="TrackLine"/>
-                    <TextBlock x:Name="TimeText" Padding="30,20,0,0"/>
+                    <Line x:Name="TrackLine" Visibility="Collapsed" Stroke="Red" StrokeThickness="1"/>
+                    <Line x:Name="PosLine" Y1="0" Visibility="Collapsed" Stroke='Yellow' StrokeThickness="1"/>
+                    <TextBlock x:Name="TimeText" Padding="10,5,0,0" Foreground="White"/>
                 </Grid>
             </Border>
         </DockPanel>

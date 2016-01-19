@@ -38,7 +38,7 @@ namespace AyxPlayer
                 var result = "";
                 foreach (var prop in type.GetProperties())
                 {
-                    result += prop.Name + ":" + prop.GetValue(file) + "\n";
+                    result += prop.Name + ":" + prop.GetValue(file,null) + "\n";
                 }
                 InfoText.Text = result;
             }
