@@ -4,9 +4,39 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:AyxWaveForm"
+             xmlns:con="clr-namespace:AyxWaveForm.Control"
              mc:Ignorable="d" x:Name="Self"
              d:DesignHeight="132.258" d:DesignWidth="767.419">
-    <DockPanel x:Name="MainArea">
-        <Slider DockPanel.Dock="Top" Name="WaveSlider"/>
-    </DockPanel>
+    <UserControl.Resources>
+        <Style TargetType="Image">
+            <Setter Property="Stretch" Value="Fill"/>
+        </Style>
+    </UserControl.Resources>
+    <Border x:Name="MainBorder" MouseWheel="MainBorder_MouseWheel">
+        <DockPanel>
+            <Border x:Name="SliderBorder" DockPanel.Dock="Top">
+                <con:WaveSlider x:Name="MainSlider" Height="30" DockPanel.Dock="Top" 
+                                SliderMoved="MainSlider_SliderMoved"/>
+            </Border>
+            <Border x:Name="WaveBorder">
+                <Grid x:Name="MainGrid">
+                    <Grid x:Name="SingleChannelGrid">
+                        <Image x:Name="SingleChannelImage"/>
+                    </Grid>
+                    <Grid x:Name="DoubleChannelGrid">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="1*"/>
+                            <RowDefinition Height="5"/>
+                            <RowDefinition Height="1*"/>
+                        </Grid.RowDefinitions>
+                        <Image Grid.Row="0" x:Name="LeftChannelImage"/>
+                        <Image Grid.Row="2" x:Name="RightChannelImage"/>
+                    </Grid>
+                    <Line x:Name="PosLine"/>
+                    <Line x:Name="TrackLine"/>
+                    <TextBlock x:Name="TimeText" Padding="30,20,0,0"/>
+                </Grid>
+            </Border>
+        </DockPanel>
+    </Border>
 </UserControl>

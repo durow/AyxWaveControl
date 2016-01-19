@@ -1,5 +1,4 @@
-﻿using AyxWaveForm.Format;
-using Microsoft.Win32;
+﻿using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,9 +13,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using System.Reflection;
 
-namespace Test
+namespace AyxPlayer
 {
     /// <summary>
     /// MainWindow.xaml 的交互逻辑
@@ -34,39 +32,21 @@ namespace Test
             if (ofd.ShowDialog() != true) return;
             try
             {
-                var file = WavFile.Read(ofd.FileName);
+                MyWaveForm.LoadFromFile(ofd.FileName);
+                var file = MyWaveForm.WavFile;
                 var type = file.GetType();
                 var result = "";
                 foreach (var prop in type.GetProperties())
                 {
                     result += prop.Name + ":" + prop.GetValue(file) + "\n";
                 }
-                ResultText.Text = result;
-                WaveImage.Source = file.DrawChannel(0, 1);
+                InfoText.Text = result;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
-                ResultText.Text = "";
+                InfoText.Text = "";
             }
-        }
-
-        private void TestScroll_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
-        {
-            //ScrollInfo.Text = TestScroll.Value + "\n";
-        }
-
-        private void TestSlider_SliderMoved(object sender, AyxWaveForm.Model.SliderMovedEventArgs e)
-        {
-            ScrollInfo.Text = "Value: " + TestSlider.SliderValue + "\n" +
-                                      "StartPer: "+ e.StartPercent + "\n" +
-                                      "Scale: " + e.Scale;
-        }
-
-        private void DockPanel_MouseWheel(object sender, MouseWheelEventArgs e)
-        {
-            var p = e.GetPosition(this).X/this.ActualWidth;
-            TestSlider.SetScale(e.Delta, p);
         }
     }
 }

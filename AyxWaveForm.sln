@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AyxWaveForm", "AyxWaveForm\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test", "Test\Test.csproj", "{F30D2A09-EAA5-49FC-B9D3-EE2270FCEB79}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AyxPlayer", "AyxPlayer\AyxPlayer.csproj", "{1122E170-D96E-430D-A332-76C14E3CB07A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{F30D2A09-EAA5-49FC-B9D3-EE2270FCEB79}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F30D2A09-EAA5-49FC-B9D3-EE2270FCEB79}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F30D2A09-EAA5-49FC-B9D3-EE2270FCEB79}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1122E170-D96E-430D-A332-76C14E3CB07A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1122E170-D96E-430D-A332-76C14E3CB07A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1122E170-D96E-430D-A332-76C14E3CB07A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1122E170-D96E-430D-A332-76C14E3CB07A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -38,20 +38,6 @@ namespace AyxWaveForm.Control
         // Using a DependencyProperty as the backing store for SliderStyle.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty SliderStyleProperty =
             DependencyProperty.Register("SliderStyle", typeof(SliderStyle), typeof(WaveSlider), new PropertyMetadata(null));
-
-
-
-        public double SliderValue
-        {
-            get { return (double)GetValue(SliderValueProperty); }
-            set { SetValue(SliderValueProperty, value); }
-        }
-
-        // Using a DependencyProperty as the backing store for SliderValue.  This enables animation, styling, binding, etc...
-        public static readonly DependencyProperty SliderValueProperty =
-            DependencyProperty.Register("SliderValue", typeof(double), typeof(WaveSlider), new PropertyMetadata(0.0));
-
-
         #endregion
 
         #region Event
@@ -63,7 +49,7 @@ namespace AyxWaveForm.Control
             InitializeComponent();
             SliderStyle = new SliderStyle();
             Scale = 1;
-            SliderValue = 1;
+            MySlider.Value = 1;
         }
 
         public void SetScale(double delta, double mousePer)
@@ -101,6 +87,10 @@ namespace AyxWaveForm.Control
             Self_SizeChanged(null, null);
         }
 
+        public void SetImage(ImageSource img)
+        {
+            SliderImage.Source = img;
+        }
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
             SliderStyle.ThumbBackground = Brushes.CornflowerBlue;

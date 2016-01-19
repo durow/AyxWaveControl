@@ -44,12 +44,10 @@
         </Style>
     </UserControl.Resources>
     <Grid>
-        <Border BorderThickness="0">
-            <Slider x:Name="MySlider" Minimum="0" Maximum="1" 
-                    DataContext="{Binding ElementName=Self, Path=SliderStyle}"
-                    Value="{Binding ElementName=Self, Path=SliderValue}"
-                    Style="{StaticResource MySliderStyle}" 
-                    ValueChanged="MySlider_ValueChanged"/>
-        </Border>
+        <Image x:Name="SliderImage" Stretch="Fill"/>
+        <Slider x:Name="MySlider" Minimum="0" Maximum="1" 
+                DataContext="{Binding ElementName=Self, Path=SliderStyle}"
+                Style="{StaticResource MySliderStyle}" 
+                ValueChanged="MySlider_ValueChanged"/>
     </Grid>
 </UserControl>
