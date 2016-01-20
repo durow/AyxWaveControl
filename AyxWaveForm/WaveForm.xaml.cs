@@ -1,4 +1,9 @@
-﻿using AyxWaveForm.Format;
+﻿/*
+ * Author:durow
+ * Date:2016.01.20
+*/
+
+using AyxWaveForm.Format;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,6 +31,7 @@ namespace AyxWaveForm
 
         #region DependencyProperties
 
+        #region WaveStyle
 
         public WaveStyle WaveStyle
         {
@@ -37,7 +43,9 @@ namespace AyxWaveForm
         public static readonly DependencyProperty WaveStyleProperty =
             DependencyProperty.Register("WaveStyle", typeof(WaveStyle), typeof(WaveForm), new PropertyMetadata(null));
 
+        #endregion
 
+        #region SliderStyle
 
         public SliderStyle SliderStyle
         {
@@ -49,35 +57,74 @@ namespace AyxWaveForm
         public static readonly DependencyProperty SliderStyleProperty =
             DependencyProperty.Register("SliderStyle", typeof(SliderStyle), typeof(WaveForm), new PropertyMetadata(null));
 
+        #endregion
+
+        #region PosLineTime
+
+
+        public double PosLineTime
+        {
+            get { return (double)GetValue(PosLineTimeProperty); }
+            private set { SetValue(PosLineTimeProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for PosLineTime.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty PosLineTimeProperty =
+            DependencyProperty.Register("PosLineTime", typeof(double), typeof(WaveForm), new PropertyMetadata(0.0));
 
 
         #endregion
 
+        #region TrackLineTime
+
+
+        public double TrackLineTime
+        {
+            get { return (double)GetValue(TrackLineTimeProperty); }
+            private set { SetValue(TrackLineTimeProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for TrackLineTime.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty TrackLineTimeProperty =
+            DependencyProperty.Register("TrackLineTime", typeof(double), typeof(WaveForm), new PropertyMetadata(0.0));
+
+
+        #endregion
+
+        #endregion
+
         #region Fields
-        private Timer playingTimer = new Timer(50);
+        private Timer playingTimer = new Timer(25);
         private bool isWorking = false;
         #endregion
 
         #region Properties
         public double WaveLeftTime { get; private set; }
-        public double PosLineTime { get; private set; }
-        public double TrackLineTime { get; private set; }
         public WavFile WavFile { get; private set; }
         public Status Status { get; private set; }
         #endregion
 
         #region Event
         public event EventHandler FileLoaded;
+        public event EventHandler PlayEnded;
+        public event EventHandler PlayStarted;
+        public event EventHandler PlayPaused;
+        public event EventHandler PlayStopped;
         #endregion
 
-        
+        #region Constructor
         public WaveForm()
         {
             InitializeComponent();
+            WaveStyle = new WaveStyle();
+            SliderStyle = new SliderStyle();
             playingTimer.Elapsed += PlayingTimer_Elapsed;
-            playingTimer.Start();
         }
+        #endregion
 
+        #region PrivateMethods
+
+        //Refresh the TrackLine,TrackLineTime and TimeText when playing
         private void PlayingTimer_Elapsed(object sender, ElapsedEventArgs e)
         {
             if (isWorking) return;
@@ -88,33 +135,19 @@ namespace AyxWaveForm
                 try
                 {
                     var time = MyPlayer.Position.TotalSeconds;
-                    TimeText.Text = ((int)MyPlayer.Position.TotalMinutes).ToString("D2") + ":" + MyPlayer.Position.Seconds.ToString("D2") +":" + MyPlayer.Position.Milliseconds.ToString("D3");
+                    TimeText.Text = ((int)MyPlayer.Position.TotalMinutes).ToString("D2") + ":" + MyPlayer.Position.Seconds.ToString("D2") + ":" + MyPlayer.Position.Milliseconds.ToString("D3");
                     CheckLine(TrackLine, time);
                     isWorking = false;
                 }
                 catch { isWorking = false; }
             }));
         }
-
-        public void LoadFromFile(string filename)
-        {
-            if (Status == Status.Playing)
-                Stop();
-            Reset();
-            MainSlider.Reset();
-            WavFile = WavFile.Read(filename);
-            MainSlider.MinScale = WavFile.MinScale;
-            SetChannels();
-            RefreshSliderImage();
-            DrawWaveImage();
-            MyPlayer.Source = new Uri(filename);
-            Status = Status.Ready;
-            if (FileLoaded != null)
-                FileLoaded(this, EventArgs.Empty);
-        }
+        //Reset the control
         private void Reset()
         {
             WavFile = null;
+            MyPlayer.Close();
+            MyPlayer.Source = null;
             Status = Status.NoFile;
             PosLine.Visibility = Visibility.Visible;
             TrackLine.Visibility = Visibility.Collapsed;
@@ -123,107 +156,72 @@ namespace AyxWaveForm
             TrackLineTime = 0;
             WaveLeftTime = 0;
         }
+        //Set the X1 and X2 property of PosLine and TrackLine
         private void SetLinesX(double x)
         {
             PosLine.X1 = PosLine.X2 = x;
             TrackLine.X1 = TrackLine.X2 = x;
         }
-
+        //Set the Y2 property of PosLine and TrackLine
         private void SetLinesY(double y)
         {
             PosLine.Y2 = TrackLine.Y2 = y;
         }
-        /// <summary>
-        /// Play
-        /// </summary>
-        public void Play()
-        {
-            if (Status == Status.Stop ||
-                Status == Status.Ready)
-            {
-                try
-                {
-                    MyPlayer.Position = TimeSpan.FromSeconds(PosLineTime);
-                    MyPlayer.Play();
-                    Status = Status.Playing;
-                }
-                catch { }
-            }
-            if(Status == Status.Pause)
-            {
-                try
-                {
-                    MyPlayer.Play();
-                }
-                catch { }
-            }
-        }
-        /// <summary>
-        /// Pause
-        /// </summary>
-        public void Pause()
-        {
-            if(Status == Status.Playing)
-            {
-                try
-                {
-                    MyPlayer.Pause();
-                    Status = Status.Pause;
-                }
-                catch { }
-            }
-        }
-        /// <summary>
-        /// Stop play
-        /// </summary>
-        public void Stop()
-        {
-            if(Status == Status.Playing ||
-                Status == Status.Pause)
-            {
-                try
-                {
-                    MyPlayer.Stop();
-                    Status = Status.Stop;
-                    TrackLine.Visibility = Visibility.Collapsed;
-                }
-                catch { }
-            }
-        }
-
-        //set the channel number when load file
+        //Set the visibility of grid when load file
         private void SetChannels()
         {
             if (WavFile.Channels == 1)
             {
                 SingleChannelGrid.Visibility = Visibility.Visible;
                 DoubleChannelGrid.Visibility = Visibility.Collapsed;
+                MiddleLine1.Visibility = Visibility.Visible;
+                MiddleLine2.Visibility = Visibility.Collapsed;
             }
             else
             {
+                MiddleLine1.Visibility = Visibility.Visible;
+                MiddleLine2.Visibility = Visibility.Visible;
                 //SingleChannelGrid.Visibility = Visibility.Collapsed;
                 //DoubleChannelGrid.Visibility = Visibility.Visible;
             }
         }
-
+        //Refresh the slider's background image
         private void RefreshSliderImage()
         {
             MainSlider.SetImage(WavFile.DrawSimple(Brushes.Lime));
         }
-        //draw wave when resize and scroll
-        private void DrawWaveImage()
+        //Refresh MiddleLines
+        private void RefreshMiddleLines()
         {
-            if (WavFile == null) return;
             if (WavFile.Channels == 1)
             {
-                SingleChannelImage.Source = WavFile.DrawChannel(MainSlider.StartPercent, MainSlider.Scale, SingleChannelGrid.ActualWidth,SingleChannelGrid.ActualHeight);
+                MiddleLine1.Y1 = MiddleLine1.Y2 = WaveGrid.ActualHeight / 2;
+                MiddleLine1.X2 = WaveGrid.ActualWidth;
             }
             else
             {
-                SingleChannelImage.Source = WavFile.DrawChannel(MainSlider.StartPercent, MainSlider.Scale, SingleChannelGrid.ActualWidth,SingleChannelGrid.ActualHeight);
+                MiddleLine1.Y1 = MiddleLine1.Y2 = WaveGrid.ActualHeight / 4;
+                MiddleLine1.X2 = MiddleLine2.X2 = WaveGrid.ActualWidth;
+                MiddleLine2.Y1 = MiddleLine2.Y2 = WaveGrid.ActualHeight * 0.75;
             }
         }
-        //check the line's visibility and position when scroll
+        //Draw wave when resize and scroll
+        private void DrawWaveImage()
+        {
+            if (WavFile == null) return;
+            Brush b = Brushes.Lime;
+            if (WaveStyle != null)
+                b = WaveStyle.WaveBrush;
+            if (WavFile.Channels == 1)
+            {
+                SingleChannelImage.Source = WavFile.DrawChannel(b,MainSlider.StartPercent, MainSlider.Scale, SingleChannelGrid.ActualWidth, SingleChannelGrid.ActualHeight);
+            }
+            else
+            {
+                SingleChannelImage.Source = WavFile.DrawChannel(b,MainSlider.StartPercent, MainSlider.Scale, SingleChannelGrid.ActualWidth, SingleChannelGrid.ActualHeight);
+            }
+        }
+        //Check the line's visibility and position when scroll
         private void CheckLine(Line line, double time)
         {
             var waveRightTime = WaveLeftTime + WavFile.TotalSeconds * MainSlider.Scale;
@@ -236,15 +234,15 @@ namespace AyxWaveForm
             else
                 line.Visibility = Visibility.Collapsed;
         }
-        //slider moved or scale changed
+        //Slider moved or scale changed
         private void MainSlider_SliderMoved(object sender, Model.SliderMovedEventArgs e)
         {
             if (WavFile == null) return;
             DrawWaveImage();
             WaveLeftTime = MainSlider.StartPercent * WavFile.TotalSeconds;
-            CheckLine(PosLine,PosLineTime);
+            CheckLine(PosLine, PosLineTime);
         }
-
+        //Scale the wave
         private void MainBorder_MouseWheel(object sender, MouseWheelEventArgs e)
         {
             if (WavFile == null) return;
@@ -253,25 +251,29 @@ namespace AyxWaveForm
 
             MainSlider.SetScale(e.Delta, x / MainGrid.ActualWidth);
         }
-
+        //When wave border size changed,need to redraw the wave
         private void WaveBorder_SizeChanged(object sender, SizeChangedEventArgs e)
         {
             try
             {
                 if (e.PreviousSize.Width != e.NewSize.Width)
                     DrawWaveImage();
+                //refresh PosLine
                 PosLine.Y2 = TrackLine.Y2 = WaveBorder.ActualHeight;
                 var newX = PosLine.X1 * e.NewSize.Width / e.PreviousSize.Width;
                 PosLine.X1 = PosLine.X2 = newX;
-                if(Status == Status.Pause)
+                //refresh TrackLine
+                if (Status == Status.Pause)
                 {
                     var newTrack = TrackLine.X1 * e.NewSize.Width / e.PreviousSize.Width;
                     TrackLine.X1 = TrackLine.X2 = newTrack;
                 }
+                //refresh MiddleLine
+                RefreshMiddleLines();
             }
             catch { }
         }
-        //set the PosLine
+        //Mouse left button down to set the PosLine and PosLineTime 
         private void MainGrid_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             if (WavFile == null) return;
@@ -279,12 +281,14 @@ namespace AyxWaveForm
             SetLinesX(x);
             PosLine.Visibility = Visibility.Visible;
             PosLineTime = WaveLeftTime + x * MainSlider.Scale * WavFile.TotalSeconds / MainGrid.ActualWidth;
-            if (Status == Status.Playing)
-                MyPlayer.Position = TimeSpan.FromSeconds(PosLineTime);
             var ts = TimeSpan.FromSeconds(PosLineTime);
-            TimeText.Text = ((int)ts.TotalMinutes).ToString("D2") + ":" + ts.Seconds.ToString("D2") + ":" + ts.Milliseconds.ToString("D3");
+            if (Status != Status.Playing)
+            {
+                MyPlayer.Position = ts;
+                TimeText.Text = ((int)ts.TotalMinutes).ToString("D2") + ":" + ts.Seconds.ToString("D2") + ":" + ts.Milliseconds.ToString("D3");
+            }
         }
-
+        //Mouse right button down to stop play
         private void MainBorder_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
         {
             if (Status == Status.Playing)
@@ -292,11 +296,104 @@ namespace AyxWaveForm
             else
                 Play();
         }
-
+        //When play ended
         private void MyPlayer_MediaEnded(object sender, RoutedEventArgs e)
         {
             Stop();
         }
+
+        #endregion
+
+        #region Public Methods
+        /// <summary>
+        /// Load a wav file and draw the waveform
+        /// </summary>
+        /// <param name="filename">Filename</param>
+        public void LoadFromFile(string filename)
+        {
+            if (Status == Status.Playing)
+                Stop();
+            Reset();
+            MainSlider.Reset();
+            WavFile = WavFile.Read(filename);
+            MainSlider.MinScale = WavFile.MinScale;
+            SetChannels();
+            RefreshSliderImage();
+            DrawWaveImage();
+            RefreshMiddleLines();
+            MyPlayer.Source = new Uri(filename);
+            Status = Status.Ready;
+            if (FileLoaded != null)
+                FileLoaded(this, EventArgs.Empty);
+        }
+
+        /// <summary>
+        /// Play
+        /// </summary>
+        public void Play()
+        {
+            if (Status == Status.Stop ||
+                Status == Status.Ready)
+            {
+                try
+                {
+                    MyPlayer.Position = TimeSpan.FromSeconds(PosLineTime);
+                    playingTimer.Start();
+                    MyPlayer.Play();
+                    Status = Status.Playing;
+                }
+                catch { }
+            }
+            if (Status == Status.Pause)
+            {
+                try
+                {
+                    playingTimer.Start();
+                    MyPlayer.Play();
+                    Status = Status.Playing;
+                }
+                catch { }
+            }
+        }
+
+        /// <summary>
+        /// Pause
+        /// </summary>
+        public void Pause()
+        {
+            if (Status == Status.Playing)
+            {
+                try
+                {
+                    MyPlayer.Pause();
+                    Status = Status.Pause;
+                    playingTimer.Stop();
+                }
+                catch { }
+            }
+        }
+
+        /// <summary>
+        /// Stop play
+        /// </summary>
+        public void Stop()
+        {
+            if (Status == Status.Playing ||
+                Status == Status.Pause)
+            {
+                try
+                {
+                    MyPlayer.Stop();
+                    Status = Status.Stop;
+                    TrackLine.Visibility = Visibility.Collapsed;
+                    playingTimer.Stop();
+                }
+                catch { }
+            }
+        }
+
+        #endregion
+        
     }
 
     public enum Status

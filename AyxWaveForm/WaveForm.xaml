@@ -14,17 +14,29 @@
         </Style>
         <converter:BoolToVisible x:Key="BoolVisibleConverter"/>
     </UserControl.Resources>
-    
+
     <Border x:Name="MainBorder" MouseWheel="MainBorder_MouseWheel" MouseRightButtonDown="MainBorder_MouseRightButtonDown">
         <DockPanel>
             <MediaElement x:Name="MyPlayer" LoadedBehavior="Manual" Visibility="Collapsed" UnloadedBehavior="Close" MediaEnded="MyPlayer_MediaEnded"/>
-            <Border x:Name="SliderBorder" DockPanel.Dock="Top" Background="Black">
-                <con:WaveSlider x:Name="MainSlider" Height="30" DockPanel.Dock="Top" 
-                                SliderMoved="MainSlider_SliderMoved"/>
+            <Border x:Name="SliderBorder" DockPanel.Dock="Top" 
+                    Background="{Binding ElementName=Self, Path=SliderStyle.SliderBackground}"
+                    BorderThickness="{Binding ElementName=Self, Path=SliderStyle.SliderBorderThickness}"
+                    BorderBrush="{Binding ElementName=Self, Path=SliderStyle.SliderBorderBrush}">
+                <con:WaveSlider x:Name="MainSlider" DockPanel.Dock="Top" 
+                                SliderMoved="MainSlider_SliderMoved" 
+                                ThumbBackground="{Binding ElementName=Self, Path=SliderStyle.ThumbBackground}"
+                                Height="{Binding ElementName=Self, Path=SliderStyle.SliderHeight}"/>
             </Border>
             <Border x:Name="WaveBorder" SizeChanged="WaveBorder_SizeChanged" 
-                    Background="Black">
+                    Background="{Binding ElementName=Self, Path=WaveStyle.WaveBackground}">
                 <Grid x:Name="MainGrid" MouseLeftButtonDown="MainGrid_MouseLeftButtonDown">
+                    <Grid x:Name="MiddleLineGrid"
+                          Visibility="{Binding ElementName=Self, Path=WaveStyle.ShowMiddleLine, Converter={StaticResource BoolVisibleConverter}}">
+                        <Line x:Name="MiddleLine1" Opacity="0.5"
+                              Stroke="{Binding ElementName=Self, Path=WaveStyle.MiddleLineBrush}"/>
+                        <Line x:Name="MiddleLine2" Opacity="0.5"
+                              Stroke="{Binding ElementName=Self, Path=WaveStyle.MiddleLineBrush}"/>
+                    </Grid>
                     <Grid x:Name="WaveGrid" 
                           Visibility="{Binding ElementName=Self, Path=WaveStyle.ShowGrid, Converter={StaticResource BoolVisibleConverter}}"/>
                     <Grid x:Name="SingleChannelGrid">
@@ -39,12 +51,15 @@
                         <Image Grid.Row="0" x:Name="LeftChannelImage"/>
                         <Image Grid.Row="2" x:Name="RightChannelImage"/>
                     </Grid>
-                    <Grid x:Name="MiddleLineGrid">
-                        <Line x:Name="MiddleLine" Stroke="Green"/>
-                    </Grid>
-                    <Line x:Name="TrackLine" Visibility="Collapsed" Stroke="Red" StrokeThickness="1"/>
-                    <Line x:Name="PosLine" Y1="0" Visibility="Collapsed" Stroke='Yellow' StrokeThickness="1"/>
-                    <TextBlock x:Name="TimeText" Padding="10,5,0,0" Foreground="White"/>
+                    <Line x:Name="TrackLine" Visibility="Collapsed" 
+                          Stroke="{Binding ElementName=Self, Path=WaveStyle.TrackLineBrush}"
+                          StrokeThickness="1"/>
+                    <Line x:Name="PosLine" Y1="0" Visibility="Collapsed" 
+                          Stroke='{Binding ElementName=Self, Path=WaveStyle.PosLineBrush}' 
+                          StrokeThickness="1"/>
+                    <TextBlock x:Name="TimeText" Padding="10,5,0,0" 
+                               Foreground="{Binding ElementName=Self, Path=WaveStyle.TimeTextBrush}" 
+                               Visibility="{Binding ElementName=Self, Path=WaveStyle.ShowTimeText, Converter={StaticResource BoolVisibleConverter}}"/>
                 </Grid>
             </Border>
         </DockPanel>

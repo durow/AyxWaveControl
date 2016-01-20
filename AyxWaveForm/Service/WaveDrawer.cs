@@ -33,9 +33,8 @@ namespace AyxWaveForm.Service
             DrawingVisual dv = new DrawingVisual();
             var dc = dv.RenderOpen();
             var pen = new Pen(waveBrush, 1);
-            
             pen.Freeze();
-            
+
             //draw wave
             var drawedSample = 0;
             for (int i = 0; i < width; i++)
@@ -88,6 +87,8 @@ namespace AyxWaveForm.Service
             DrawingVisual dv = new DrawingVisual();
             var dc = dv.RenderOpen();
             var pen = new Pen(waveBrush, 1);
+            var linePen = new Pen(waveBrush, 1);
+            
             pen.Freeze();
 
             //draw wave

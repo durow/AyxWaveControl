@@ -170,21 +170,15 @@ namespace AyxWaveForm.Model
 
         #endregion
 
-        public static WaveStyle Default
+        public WaveStyle()
         {
-            get
-            {
-                return new WaveStyle
-                {
-                    WaveBackground = Brushes.Black,
-                    WaveBrush = Brushes.Lime,
-                    PosLineBrush = Brushes.Yellow,
-                    TrackLineBrush = Brushes.Pink,
-                    MiddleLineBrush = Brushes.Green,
-                    GridBrush = Brushes.DarkGreen,
-                    TimeTextBrush = Brushes.White,
-                };
-            }
+            WaveBackground = new SolidColorBrush(Color.FromRgb(26,61,91));
+            WaveBrush = new SolidColorBrush(Color.FromRgb(93, 175, 235));
+            PosLineBrush = Brushes.Gold;
+            TrackLineBrush = Brushes.Red;
+            MiddleLineBrush = new SolidColorBrush(Color.FromRgb(93, 175, 235));
+            GridBrush = Brushes.DarkGreen;
+            TimeTextBrush = Brushes.White;
         }
     }
 }

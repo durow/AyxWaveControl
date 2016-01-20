@@ -4,7 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:AyxWaveForm.Control"
-             mc:Ignorable="d" Loaded="UserControl_Loaded" x:Name="Self"
+             mc:Ignorable="d" x:Name="Self"
              d:DesignHeight="59.355" d:DesignWidth="523.226" SizeChanged="Self_SizeChanged">
     <UserControl.Resources>
         <Style x:Key="MyThumbStyle" TargetType="Thumb">
@@ -12,8 +12,8 @@
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="Thumb">
-                        <Border Name="ThumbBorder" Background="{Binding ThumbBackground}"
-                                Width="{Binding ThumbWidth}"/>
+                        <Border Name="ThumbBorder" Background="{Binding ThumbBackground, Mode=TwoWay}"
+                                Width="{Binding ThumbWidth, Mode=TwoWay}"/>
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
@@ -46,7 +46,7 @@
     <Grid>
         <Image x:Name="SliderImage" Stretch="Fill"/>
         <Slider x:Name="MySlider" Minimum="0" Maximum="1" 
-                DataContext="{Binding ElementName=Self, Path=SliderStyle}"
+                DataContext="{Binding ElementName=Self}"
                 Style="{StaticResource MySliderStyle}" 
                 ValueChanged="MySlider_ValueChanged"/>
     </Grid>

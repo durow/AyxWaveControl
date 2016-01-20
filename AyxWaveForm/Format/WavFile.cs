@@ -196,12 +196,12 @@ namespace AyxWaveForm.Format
             MinScale = (double)MinWidth / (double)MaxWidth;
         }
 
-        public ImageSource DrawChannel(double startPer, double scale, double width,double height)
+        public ImageSource DrawChannel(Brush waveBrush,double startPer, double scale, double width,double height)
         {
             if (Channels == 1)
-                return WaveDrawer.Draw1Channel(CacheData.Channel, Brushes.Lime,startPer,scale,width,height);
+                return WaveDrawer.Draw1Channel(CacheData.Channel, waveBrush,startPer,scale,width,height);
             else
-                return WaveDrawer.Draw2Channel(CacheData.LeftChannel, CacheData.RightChannel, Brushes.Lime,startPer,scale,width,height);
+                return WaveDrawer.Draw2Channel(CacheData.LeftChannel, CacheData.RightChannel, waveBrush,startPer,scale,width,height);
         }
 
         public ImageSource DrawLeftChannel()

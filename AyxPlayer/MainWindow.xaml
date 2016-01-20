@@ -6,7 +6,7 @@
         xmlns:con="clr-namespace:AyxWaveForm;assembly=AyxWaveForm"
         xmlns:local="clr-namespace:AyxPlayer" WindowStartupLocation="CenterScreen"
         mc:Ignorable="d"
-        Title="MainWindow" Height="317" Width="839">
+        Title="MainWindow" Height="317" Width="1539">
     <DockPanel>
         <ToolBar DockPanel.Dock="Top" Background="Transparent" ToolBarTray.IsLocked="True">
             <Button Content="Open" Padding="5,2,5,2" Click="Button_Click"/>
