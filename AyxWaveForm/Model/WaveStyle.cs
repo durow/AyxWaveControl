@@ -174,8 +174,8 @@ namespace AyxWaveForm.Model
         {
             WaveBackground = new SolidColorBrush(Color.FromRgb(26,61,91));
             WaveBrush = new SolidColorBrush(Color.FromRgb(93, 175, 235));
-            PosLineBrush = Brushes.Gold;
-            TrackLineBrush = Brushes.Red;
+            PosLineBrush = new SolidColorBrush(Color.FromRgb(110, 197, 114));
+            TrackLineBrush = new SolidColorBrush(Color.FromRgb(240, 228, 159));
             MiddleLineBrush = new SolidColorBrush(Color.FromRgb(93, 175, 235));
             GridBrush = Brushes.DarkGreen;
             TimeTextBrush = Brushes.White;

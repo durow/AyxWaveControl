@@ -5,14 +5,25 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:con="clr-namespace:AyxWaveForm;assembly=AyxWaveForm"
         xmlns:local="clr-namespace:AyxPlayer" WindowStartupLocation="CenterScreen"
-        mc:Ignorable="d"
-        Title="MainWindow" Height="317" Width="1539">
-    <DockPanel>
-        <ToolBar DockPanel.Dock="Top" Background="Transparent" ToolBarTray.IsLocked="True">
-            <Button Content="Open" Padding="5,2,5,2" Click="Button_Click"/>
-        </ToolBar>
-        <DockPanel DockPanel.Dock="Bottom"></DockPanel>
-        <TextBox DockPanel.Dock="Right" x:Name="InfoText" Width="200"/>
-        <con:WaveForm x:Name="MyWaveForm"/>
-    </DockPanel>
+        mc:Ignorable="d" Background="#FF052442" AllowsTransparency="True" 
+        WindowStyle="None" 
+        Title="AyxPlayer alpha    by durow    ---- 2016.01" Height="317" Width="1539" 
+        Foreground="#FF75A2CF" ResizeMode="CanResizeWithGrip">
+    <Border BorderThickness="5" BorderBrush="#FF04213C">
+        <DockPanel>
+            <TextBlock DockPanel.Dock="Top" Text="AyxPlayer alpha    by durow    ---- 2016.01" Padding="5"
+                       MouseLeftButtonDown="Window_MouseLeftButtonDown"/>
+            <ToolBar DockPanel.Dock="Top" Background="Transparent"  ToolBarTray.IsLocked="True">
+                <Button Content="Open" Padding="5,2,5,2" Foreground="#FF75A2CF" Click="Button_Click"/>
+            </ToolBar>
+            <DockPanel DockPanel.Dock="Bottom" Background="Transparent">
+                <TextBlock Text="Tip Text" DockPanel.Dock="Left" Padding="5" 
+                           MouseLeftButtonDown="Window_MouseLeftButtonDown"/>
+            </DockPanel>
+            <TextBox DockPanel.Dock="Right" x:Name="InfoText" Width="200"
+                 Background="#FF1A3D5B" BorderThickness="2,0,0,0" Padding="2"
+                 BorderBrush="#FF052442" Foreground="#FF75A2CF"/>
+            <con:WaveForm x:Name="MyWaveForm"/>
+        </DockPanel>
+    </Border>
 </Window>

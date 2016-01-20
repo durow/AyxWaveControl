@@ -78,8 +78,8 @@ namespace AyxWaveForm.Service
                     {
                         try
                         {
-                            lInfo.Push((short)(reader(br)/2));
-                            rInfo.Push((short)(reader(br)/2));
+                            lInfo.Push((short)(reader(br)));
+                            rInfo.Push((short)(reader(br)));
                         }
                         catch
                         {
@@ -144,9 +144,9 @@ namespace AyxWaveForm.Service
         private static short[] Read2Channels16Bit(BinaryReader br)
         {
             var left = Read16Bit(br);
-            left = (short)((WavFile.MinHeight - left) / 2);
+            left = (short)(WavFile.MinHeight - left);
             var right = Read16Bit(br);
-            right = (short)((WavFile.MinHeight - right) / 2);
+            right = (short)(WavFile.MinHeight - right);
 
             var result = new short[2];
             result[0] = left;
@@ -156,9 +156,9 @@ namespace AyxWaveForm.Service
         private static short[] Read2Channels8Bit(BinaryReader br)
         {
             var left = Read8Bit(br);
-            left = (short)((WavFile.MinHeight - left) / 2);
+            left = (short)(WavFile.MinHeight - left);
             var right = Read8Bit(br);
-            right = (short)((WavFile.MinHeight - right) / 2);
+            right = (short)(WavFile.MinHeight - right);
 
             var result = new short[2];
             result[0] = left;

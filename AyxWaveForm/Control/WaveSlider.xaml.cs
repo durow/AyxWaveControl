@@ -85,13 +85,13 @@ namespace AyxWaveForm.Control
             if (delta < 0)
             {
                 if (Scale == 1) return;
-                Scale += 0.1;
+                Scale += 0.05;
                 if (Scale > 1) Scale = 1;
             }
             else if (delta > 0)
             {
                 if (Scale == MinScale) return;
-                Scale -= 0.1;
+                Scale -= 0.05;
                 if (Scale < MinScale) Scale = MinScale;
             }
             if (Scale == 1)

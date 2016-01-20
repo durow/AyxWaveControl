@@ -102,6 +102,7 @@ namespace AyxWaveForm
         public double WaveLeftTime { get; private set; }
         public WavFile WavFile { get; private set; }
         public Status Status { get; private set; }
+        public bool AutoStart { get; set; }
         #endregion
 
         #region Event
@@ -172,37 +173,37 @@ namespace AyxWaveForm
         {
             if (WavFile.Channels == 1)
             {
-                SingleChannelGrid.Visibility = Visibility.Visible;
-                DoubleChannelGrid.Visibility = Visibility.Collapsed;
-                MiddleLine1.Visibility = Visibility.Visible;
-                MiddleLine2.Visibility = Visibility.Collapsed;
+                SingleChannel.Visibility = Visibility.Visible;
+                DoubleChannel.Visibility = Visibility.Collapsed;
             }
             else
             {
-                MiddleLine1.Visibility = Visibility.Visible;
-                MiddleLine2.Visibility = Visibility.Visible;
-                //SingleChannelGrid.Visibility = Visibility.Collapsed;
-                //DoubleChannelGrid.Visibility = Visibility.Visible;
+                SingleChannel.Visibility = Visibility.Collapsed;
+                DoubleChannel.Visibility = Visibility.Visible;
             }
         }
         //Refresh the slider's background image
         private void RefreshSliderImage()
         {
-            MainSlider.SetImage(WavFile.DrawSimple(Brushes.Lime));
+            Brush b = Brushes.Lime;
+            if (SliderStyle != null)
+                b = SliderStyle.SliderWaveBrush;
+            MainSlider.SetImage(WavFile.DrawSimple(b));
         }
         //Refresh MiddleLines
         private void RefreshMiddleLines()
         {
             if (WavFile.Channels == 1)
             {
-                MiddleLine1.Y1 = MiddleLine1.Y2 = WaveGrid.ActualHeight / 2;
-                MiddleLine1.X2 = WaveGrid.ActualWidth;
+                SingleMiddleLine.Y1 = SingleMiddleLine.Y2 = WaveGrid.ActualHeight / 2;
+                SingleMiddleLine.X2 = WaveGrid.ActualWidth;
             }
             else
             {
-                MiddleLine1.Y1 = MiddleLine1.Y2 = WaveGrid.ActualHeight / 4;
-                MiddleLine1.X2 = MiddleLine2.X2 = WaveGrid.ActualWidth;
-                MiddleLine2.Y1 = MiddleLine2.Y2 = WaveGrid.ActualHeight * 0.75;
+                LeftMiddleLine.Y1 = LeftMiddleLine.Y2 = LeftChannelGrid.ActualHeight / 2;
+                LeftMiddleLine.X2 = LeftChannelGrid.ActualWidth;
+                RightMiddleLine.Y1 = RightMiddleLine.Y2 = RightChannelGrid.ActualHeight / 2;
+                RightMiddleLine.X2 = RightChannelGrid.ActualWidth;
             }
         }
         //Draw wave when resize and scroll
@@ -214,11 +215,12 @@ namespace AyxWaveForm
                 b = WaveStyle.WaveBrush;
             if (WavFile.Channels == 1)
             {
-                SingleChannelImage.Source = WavFile.DrawChannel(b,MainSlider.StartPercent, MainSlider.Scale, SingleChannelGrid.ActualWidth, SingleChannelGrid.ActualHeight);
+                SingleChannelImage.Source = WavFile.DrawChannel(b,MainSlider.StartPercent, MainSlider.Scale, SingleChannel.ActualWidth, SingleChannel.ActualHeight);
             }
             else
             {
-                SingleChannelImage.Source = WavFile.DrawChannel(b,MainSlider.StartPercent, MainSlider.Scale, SingleChannelGrid.ActualWidth, SingleChannelGrid.ActualHeight);
+                LeftChannelImage.Source = WavFile.DrawLeftChannel(b, MainSlider.StartPercent, MainSlider.Scale, LeftChannel.ActualWidth, LeftChannel.ActualHeight);
+                RightChannelImage.Source = WavFile.DrawRightChannel(b, MainSlider.StartPercent, MainSlider.Scale, RightChannel.ActualWidth, RightChannel.ActualHeight);
             }
         }
         //Check the line's visibility and position when scroll
@@ -313,6 +315,8 @@ namespace AyxWaveForm
         {
             if (Status == Status.Playing)
                 Stop();
+            if (WavFile != null && WavFile.FileName == filename)
+                return;
             Reset();
             MainSlider.Reset();
             WavFile = WavFile.Read(filename);
@@ -322,6 +326,8 @@ namespace AyxWaveForm
             DrawWaveImage();
             RefreshMiddleLines();
             MyPlayer.Source = new Uri(filename);
+            MyPlayer.Play();
+            if (!AutoStart) MyPlayer.Stop();
             Status = Status.Ready;
             if (FileLoaded != null)
                 FileLoaded(this, EventArgs.Empty);

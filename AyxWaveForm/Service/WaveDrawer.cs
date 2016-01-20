@@ -120,8 +120,8 @@ namespace AyxWaveForm.Service
                     rmin = (short)ScaleToHeight(rmin, height);
                     rmax = (short)ScaleToHeight(rmax, height);
                 }
-                dc.DrawLine(pen, new Point(i , lmin), new Point(i , lmax));
-                dc.DrawLine(pen, new Point(i , rmin + singleHeight), new Point(i , rmax + singleHeight));
+                dc.DrawLine(pen, new Point(i , lmin/2), new Point(i , lmax/2));
+                dc.DrawLine(pen, new Point(i , rmin/2 + singleHeight), new Point(i , rmax/2 + singleHeight));
                 drawedSample += drawSample;
             }
             dc.Close();

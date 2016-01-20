@@ -204,14 +204,14 @@ namespace AyxWaveForm.Format
                 return WaveDrawer.Draw2Channel(CacheData.LeftChannel, CacheData.RightChannel, waveBrush,startPer,scale,width,height);
         }
 
-        public ImageSource DrawLeftChannel()
+        public ImageSource DrawLeftChannel(Brush waveBrush, double startPer, double scale, double width, double height)
         {
-            return null;
+            return WaveDrawer.Draw1Channel(CacheData.LeftChannel, waveBrush, startPer, scale, width, height);
         }
 
-        public ImageSource DrawRightChannel()
+        public ImageSource DrawRightChannel(Brush waveBrush, double startPer, double scale, double width, double height)
         {
-            return null;
+            return WaveDrawer.Draw1Channel(CacheData.RightChannel, waveBrush, startPer, scale, width, height);
         }
 
         public ImageSource DrawSimple(Brush waveBrush)

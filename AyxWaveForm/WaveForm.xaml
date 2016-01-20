@@ -6,7 +6,7 @@
              xmlns:local="clr-namespace:AyxWaveForm"
              xmlns:con="clr-namespace:AyxWaveForm.Control"
              xmlns:converter="clr-namespace:AyxWaveForm.Converter"
-             mc:Ignorable="d" x:Name="Self"
+             mc:Ignorable="d" x:Name="Self" 
              d:DesignHeight="132.258" d:DesignWidth="767.419">
     <UserControl.Resources>
         <Style TargetType="Image">
@@ -14,7 +14,6 @@
         </Style>
         <converter:BoolToVisible x:Key="BoolVisibleConverter"/>
     </UserControl.Resources>
-
     <Border x:Name="MainBorder" MouseWheel="MainBorder_MouseWheel" MouseRightButtonDown="MainBorder_MouseRightButtonDown">
         <DockPanel>
             <MediaElement x:Name="MyPlayer" LoadedBehavior="Manual" Visibility="Collapsed" UnloadedBehavior="Close" MediaEnded="MyPlayer_MediaEnded"/>
@@ -30,33 +29,43 @@
             <Border x:Name="WaveBorder" SizeChanged="WaveBorder_SizeChanged" 
                     Background="{Binding ElementName=Self, Path=WaveStyle.WaveBackground}">
                 <Grid x:Name="MainGrid" MouseLeftButtonDown="MainGrid_MouseLeftButtonDown">
-                    <Grid x:Name="MiddleLineGrid"
-                          Visibility="{Binding ElementName=Self, Path=WaveStyle.ShowMiddleLine, Converter={StaticResource BoolVisibleConverter}}">
-                        <Line x:Name="MiddleLine1" Opacity="0.5"
-                              Stroke="{Binding ElementName=Self, Path=WaveStyle.MiddleLineBrush}"/>
-                        <Line x:Name="MiddleLine2" Opacity="0.5"
-                              Stroke="{Binding ElementName=Self, Path=WaveStyle.MiddleLineBrush}"/>
-                    </Grid>
                     <Grid x:Name="WaveGrid" 
                           Visibility="{Binding ElementName=Self, Path=WaveStyle.ShowGrid, Converter={StaticResource BoolVisibleConverter}}"/>
-                    <Grid x:Name="SingleChannelGrid">
+                    <Grid x:Name="SingleChannel">
+                        <Grid x:Name="SingleGrid" Visibility="{Binding ElementName=Self, Path=WaveStyle.ShowGrid, Converter={StaticResource BoolVisibleConverter}}"/>
+                        <Line x:Name="SingleMiddleLine" Opacity="0.5"
+                              Stroke="{Binding ElementName=Self, Path=WaveStyle.MiddleLineBrush}"
+                              Visibility="{Binding ElementName=Self, Path=WaveStyle.ShowMiddleLine, Converter={StaticResource BoolVisibleConverter}}"/>
                         <Image x:Name="SingleChannelImage"/>
                     </Grid>
-                    <Grid x:Name="DoubleChannelGrid">
+                    <Grid x:Name="DoubleChannel">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="1*"/>
-                            <RowDefinition Height="5"/>
+                            <RowDefinition Height="2"/>
                             <RowDefinition Height="1*"/>
                         </Grid.RowDefinitions>
-                        <Image Grid.Row="0" x:Name="LeftChannelImage"/>
-                        <Image Grid.Row="2" x:Name="RightChannelImage"/>
+                        <Grid Grid.Row="0" x:Name="LeftChannel">
+                            <Grid x:Name="LeftChannelGrid"/>
+                            <Line x:Name="LeftMiddleLine" Opacity="0.5"
+                              Stroke="{Binding ElementName=Self, Path=WaveStyle.MiddleLineBrush}"
+                              Visibility="{Binding ElementName=Self, Path=WaveStyle.ShowMiddleLine, Converter={StaticResource BoolVisibleConverter}}"/>
+                            <Image x:Name="LeftChannelImage" />
+                        </Grid>
+                        <Grid Grid.Row="1" x:Name="DoubleChannelMiddle" Background="#22FFFFFF"/>
+                        <Grid Grid.Row="2" x:Name="RightChannel">
+                            <Grid x:Name="RightChannelGrid"/>
+                            <Line x:Name="RightMiddleLine" Opacity="0.5"
+                              Stroke="{Binding ElementName=Self, Path=WaveStyle.MiddleLineBrush}"
+                              Visibility="{Binding ElementName=Self, Path=WaveStyle.ShowMiddleLine, Converter={StaticResource BoolVisibleConverter}}"/>
+                            <Image x:Name="RightChannelImage"/>
+                        </Grid>
                     </Grid>
                     <Line x:Name="TrackLine" Visibility="Collapsed" 
                           Stroke="{Binding ElementName=Self, Path=WaveStyle.TrackLineBrush}"
-                          StrokeThickness="1"/>
+                          StrokeThickness="1.5"/>
                     <Line x:Name="PosLine" Y1="0" Visibility="Collapsed" 
                           Stroke='{Binding ElementName=Self, Path=WaveStyle.PosLineBrush}' 
-                          StrokeThickness="1"/>
+                          StrokeThickness="1.5"/>
                     <TextBlock x:Name="TimeText" Padding="10,5,0,0" 
                                Foreground="{Binding ElementName=Self, Path=WaveStyle.TimeTextBrush}" 
                                Visibility="{Binding ElementName=Self, Path=WaveStyle.ShowTimeText, Converter={StaticResource BoolVisibleConverter}}"/>

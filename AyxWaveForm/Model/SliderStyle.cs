@@ -49,6 +49,22 @@ namespace AyxWaveForm.Model
 
         #endregion
 
+        #region SliderWaveBrush
+
+
+        public Brush SliderWaveBrush
+        {
+            get { return (Brush)GetValue(SliderWaveBrushProperty); }
+            set { SetValue(SliderWaveBrushProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for SliderWaveBrush.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty SliderWaveBrushProperty =
+            DependencyProperty.Register("SliderWaveBrush", typeof(Brush), typeof(SliderStyle), new PropertyMetadata(null));
+
+
+        #endregion
+
         #region SliderBorderThickness
 
 
@@ -99,8 +115,9 @@ namespace AyxWaveForm.Model
 
         public SliderStyle()
         {
-            ThumbBackground = Brushes.White;
-            SliderBackground = Brushes.Black;
+            ThumbBackground = new SolidColorBrush(Color.FromRgb(99,184,239));
+            SliderBackground = new SolidColorBrush(Color.FromRgb(0, 17, 33));
+            SliderWaveBrush = new SolidColorBrush(Color.FromRgb(80, 148, 211));
             SliderBorderBrush = Brushes.Black;
         }
     }

@@ -48,5 +48,10 @@ namespace AyxPlayer
                 InfoText.Text = "";
             }
         }
+
+        private void Window_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            DragMove();
+        }
     }
 }
