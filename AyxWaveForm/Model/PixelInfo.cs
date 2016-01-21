@@ -10,12 +10,12 @@ namespace AyxWaveForm.Model
         /// <summary>
         /// The minimum value of the pixel
         /// </summary>
-        public short Min { get; private set; }
+        public short Min { get; set; }
 
         /// <summary>
         /// The maximum value of the pixel
         /// </summary>
-        public short Max { get; private set; }
+        public short Max { get; set; }
 
         public PixelInfo()
         {
