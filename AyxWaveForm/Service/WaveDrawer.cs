@@ -37,6 +37,7 @@ namespace AyxWaveForm.Service
 
             //draw wave
             var drawedSample = 0;
+            PixelInfo prePixel = null;
             for (int i = 0; i < width; i++)
             {
                 var drawSample = 0;
@@ -59,6 +60,27 @@ namespace AyxWaveForm.Service
                     max = (short)ScaleToHeight(max, height);
                 }
                 dc.DrawLine(pen, new Point(i, min), new Point(i, max));
+                if (prePixel == null)
+                {
+                    prePixel = new PixelInfo
+                    {
+                        Min = min,
+                        Max = max,
+                    };
+                }
+                else
+                {
+                    if(prePixel.Max < min)
+                    {
+                        dc.DrawLine(pen, new Point(i - 1, prePixel.Max), new Point(i, min));
+                    }
+                    if (prePixel.Min > max)
+                    {
+                        dc.DrawLine(pen, new Point(i - 1, prePixel.Min), new Point(i, max));
+                    }
+                    prePixel.Max = max;
+                    prePixel.Min = min;
+                }
                 drawedSample += drawSample;
             }
             dc.Close();
@@ -93,6 +115,8 @@ namespace AyxWaveForm.Service
 
             //draw wave
             var drawedSample = 0;
+            PixelInfo lprePixel = null;
+            PixelInfo rprePixel = null;
             for (int i = 0; i < width; i++)
             {
                 var drawSample = 0;
@@ -122,6 +146,36 @@ namespace AyxWaveForm.Service
                 }
                 dc.DrawLine(pen, new Point(i , lmin/2), new Point(i , lmax/2));
                 dc.DrawLine(pen, new Point(i , rmin/2 + singleHeight), new Point(i , rmax/2 + singleHeight));
+                if(lprePixel == null)
+                {
+                    lprePixel = new PixelInfo
+                    {
+                        Max = lmax,
+                        Min = lmin,
+                    };
+                }
+                else
+                {
+                    if(lprePixel.Max < lmin)
+                        dc.DrawLine(pen, new Point(i-1, lprePixel.Max / 2), new Point(i, lmin / 2));
+                    if(lprePixel.Min > lmax)
+                        dc.DrawLine(pen, new Point(i-1, lprePixel.Min / 2), new Point(i, lmax / 2));
+                }
+                if(rprePixel == null)
+                {
+                    rprePixel = new PixelInfo
+                    {
+                        Max = rmax,
+                        Min = rmin,
+                    };
+                }
+                else
+                {
+                    if (rprePixel.Max < rmin)
+                        dc.DrawLine(pen, new Point(i - 1, rprePixel.Max / 2), new Point(i, rmin / 2));
+                    if (rprePixel.Min > rmax)
+                        dc.DrawLine(pen, new Point(i - 1, rprePixel.Min / 2), new Point(i, rmax / 2));
+                }
                 drawedSample += drawSample;
             }
             dc.Close();
