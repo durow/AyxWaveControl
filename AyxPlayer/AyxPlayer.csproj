@@ -117,7 +117,23 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Image\Pause.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Image\Forward.png" />
+    <Resource Include="Image\Mute.png" />
+    <Resource Include="Image\Sound.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Image\Backward.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Image\Close.png" />
+  </ItemGroup>
+  <ItemGroup>
     <Resource Include="Image\Stop.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Image\Min.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

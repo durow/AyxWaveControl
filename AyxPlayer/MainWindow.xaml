@@ -14,8 +14,16 @@
     </Window.Resources>
     <Border BorderThickness="5" BorderBrush="#FF04213C">
         <DockPanel>
-            <TextBlock DockPanel.Dock="Top" Text="AyxPlayer alpha    by durow    ---- 2016.01" Padding="5"
+            <DockPanel DockPanel.Dock="Top">
+                <Button x:Name="CloseButton" DockPanel.Dock="Right" Padding="5,2,5,2"  Click="CloseButton_Click" Style="{StaticResource MyButtonStyle}">
+                    <Image Width="16" Height="16" Source="Image/Close.png"/>
+                </Button>
+                <Button x:Name="MinButton" DockPanel.Dock="Right" Padding="5,2,5,2"  Click="MinButton_Click" Style="{StaticResource MyButtonStyle}">
+                    <Image Width="16" Height="16" Source="Image/Min.png"/>
+                </Button>
+                <TextBlock DockPanel.Dock="Top" Text="AyxPlayer alpha    by durow    ---- 2016.01" Padding="5"
                        MouseLeftButtonDown="Window_MouseLeftButtonDown"/>
+            </DockPanel>
             <WrapPanel DockPanel.Dock="Top" Background="Transparent"  
                        MouseLeftButtonDown="Window_MouseLeftButtonDown">
                 <Button Padding="5,2,5,2"  Click="Button_Click" Style="{StaticResource MyButtonStyle}">
@@ -27,6 +35,13 @@
                 <Button Padding="5,2,5,2"  Click="Button_Click" Style="{StaticResource MyButtonStyle}">
                     <Image Width="16" Height="16" Source="Image/Stop.png"/>
                 </Button>
+                <Button Padding="5,2,5,2"  Click="Button_Click" Style="{StaticResource MyButtonStyle}">
+                    <Image Width="16" Height="16" Source="Image/Backward.png"/>
+                </Button>
+                <Button Padding="5,2,5,2"  Click="Button_Click" Style="{StaticResource MyButtonStyle}">
+                    <Image Width="16" Height="16" Source="Image/Forward.png"/>
+                </Button>
+                
             </WrapPanel>
             <DockPanel DockPanel.Dock="Bottom" Background="Transparent">
                 <TextBlock Text="Tip Text" DockPanel.Dock="Left" Padding="5" 

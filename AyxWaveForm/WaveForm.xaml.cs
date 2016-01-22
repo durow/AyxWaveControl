@@ -399,7 +399,10 @@ namespace AyxWaveForm
         }
 
         #endregion
-        
+
+        private void WaveBorder_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+        }
     }
 
     public enum Status

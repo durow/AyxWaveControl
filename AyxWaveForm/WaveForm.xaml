@@ -27,6 +27,7 @@
                                 Height="{Binding ElementName=Self, Path=SliderStyle.SliderHeight}"/>
             </Border>
             <Border x:Name="WaveBorder" SizeChanged="WaveBorder_SizeChanged" 
+                    MouseDown="WaveBorder_MouseDown"
                     Background="{Binding ElementName=Self, Path=WaveStyle.WaveBackground}">
                 <Grid x:Name="MainGrid" MouseLeftButtonDown="MainGrid_MouseLeftButtonDown">
                     <Grid x:Name="WaveGrid" 
@@ -60,12 +61,14 @@
                             <Image x:Name="RightChannelImage"/>
                         </Grid>
                     </Grid>
-                    <Line x:Name="TrackLine" Visibility="Collapsed" 
+                    <Grid x:Name="Llines">
+                        <Line x:Name="TrackLine" Visibility="Collapsed" 
                           Stroke="{Binding ElementName=Self, Path=WaveStyle.TrackLineBrush}"
                           StrokeThickness="1.5"/>
-                    <Line x:Name="PosLine" Y1="0" Visibility="Collapsed" 
+                        <Line x:Name="PosLine" Y1="0" Visibility="Collapsed" 
                           Stroke='{Binding ElementName=Self, Path=WaveStyle.PosLineBrush}' 
                           StrokeThickness="1.5"/>
+                    </Grid>
                     <TextBlock x:Name="TimeText" Padding="10,5,0,0" 
                                Foreground="{Binding ElementName=Self, Path=WaveStyle.TimeTextBrush}" 
                                Visibility="{Binding ElementName=Self, Path=WaveStyle.ShowTimeText, Converter={StaticResource BoolVisibleConverter}}"/>
