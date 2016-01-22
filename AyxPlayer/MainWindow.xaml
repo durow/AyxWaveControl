@@ -9,13 +9,25 @@
         WindowStyle="None" 
         Title="AyxPlayer alpha    by durow    ---- 2016.01" Height="317" Width="1539" 
         Foreground="#FF75A2CF" ResizeMode="CanResizeWithGrip">
+    <Window.Resources>
+        <ResourceDictionary Source="Resource\MyStyle.xaml"/>
+    </Window.Resources>
     <Border BorderThickness="5" BorderBrush="#FF04213C">
         <DockPanel>
             <TextBlock DockPanel.Dock="Top" Text="AyxPlayer alpha    by durow    ---- 2016.01" Padding="5"
                        MouseLeftButtonDown="Window_MouseLeftButtonDown"/>
-            <ToolBar DockPanel.Dock="Top" Background="Transparent"  ToolBarTray.IsLocked="True">
-                <Button Content="Open" Padding="5,2,5,2" Foreground="#FF75A2CF" Click="Button_Click"/>
-            </ToolBar>
+            <WrapPanel DockPanel.Dock="Top" Background="Transparent"  
+                       MouseLeftButtonDown="Window_MouseLeftButtonDown">
+                <Button Padding="5,2,5,2"  Click="Button_Click" Style="{StaticResource MyButtonStyle}">
+                    <Image Width="16" Height="16" Source="Image/Play.png"/>
+                </Button>
+                <Button Padding="5,2,5,2"  Click="Button_Click" Style="{StaticResource MyButtonStyle}">
+                    <Image Width="16" Height="16" Source="Image/Pause.png"/>
+                </Button>
+                <Button Padding="5,2,5,2"  Click="Button_Click" Style="{StaticResource MyButtonStyle}">
+                    <Image Width="16" Height="16" Source="Image/Stop.png"/>
+                </Button>
+            </WrapPanel>
             <DockPanel DockPanel.Dock="Bottom" Background="Transparent">
                 <TextBlock Text="Tip Text" DockPanel.Dock="Left" Padding="5" 
                            MouseLeftButtonDown="Window_MouseLeftButtonDown"/>
