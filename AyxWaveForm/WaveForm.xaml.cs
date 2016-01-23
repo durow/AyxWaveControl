@@ -137,6 +137,7 @@ namespace AyxWaveForm
                 {
                     var time = MyPlayer.Position.TotalSeconds;
                     TimeText.Text = ((int)MyPlayer.Position.TotalMinutes).ToString("D2") + ":" + MyPlayer.Position.Seconds.ToString("D2") + ":" + MyPlayer.Position.Milliseconds.ToString("D3");
+                    MainSlider.TrackLine.X1 = MainSlider.TrackLine.X2 = MainSlider.ActualWidth * time / WavFile.TotalSeconds;
                     CheckLine(TrackLine, time);
                     isWorking = false;
                 }
@@ -152,6 +153,8 @@ namespace AyxWaveForm
             Status = Status.NoFile;
             PosLine.Visibility = Visibility.Visible;
             TrackLine.Visibility = Visibility.Collapsed;
+            MainSlider.PosLine.X2 = MainSlider.PosLine.X1 = 0;
+            MainSlider.TrackLine.Visibility = Visibility.Collapsed;
             SetLinesX(0);
             PosLineTime = 0;
             TrackLineTime = 0;
@@ -283,6 +286,8 @@ namespace AyxWaveForm
             SetLinesX(x);
             PosLine.Visibility = Visibility.Visible;
             PosLineTime = WaveLeftTime + x * MainSlider.Scale * WavFile.TotalSeconds / MainGrid.ActualWidth;
+            var sliderPosLine = PosLineTime * MainSlider.ActualWidth / WavFile.TotalSeconds;
+            MainSlider.PosLine.X1 = MainSlider.PosLine.X2 = sliderPosLine;
             var ts = TimeSpan.FromSeconds(PosLineTime);
             if (Status != Status.Playing)
             {
@@ -346,6 +351,7 @@ namespace AyxWaveForm
                     MyPlayer.Position = TimeSpan.FromSeconds(PosLineTime);
                     playingTimer.Start();
                     MyPlayer.Play();
+                    MainSlider.TrackLine.Visibility = Visibility.Visible;
                     Status = Status.Playing;
                 }
                 catch { }
@@ -392,6 +398,7 @@ namespace AyxWaveForm
                     MyPlayer.Stop();
                     Status = Status.Stop;
                     TrackLine.Visibility = Visibility.Collapsed;
+                    MainSlider.TrackLine.Visibility = Visibility.Collapsed;
                     playingTimer.Stop();
                 }
                 catch { }

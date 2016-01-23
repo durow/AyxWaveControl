@@ -113,12 +113,63 @@ namespace AyxWaveForm.Model
 
         #endregion
 
+        #region PosLineBrush
+
+
+        public Brush PosLineBrush
+        {
+            get { return (Brush)GetValue(PosLineBrushProperty); }
+            set { SetValue(PosLineBrushProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for PosLineBrush.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty PosLineBrushProperty =
+            DependencyProperty.Register("PosLineBrush", typeof(Brush), typeof(SliderStyle), new PropertyMetadata(null));
+
+
+        #endregion
+
+        #region TrackLineBrush
+
+
+        public Brush TrackLineBrush
+        {
+            get { return (Brush)GetValue(TrackLineBrushProperty); }
+            set { SetValue(TrackLineBrushProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for TrackLineBrush.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty TrackLineBrushProperty =
+            DependencyProperty.Register("TrackLineBrush", typeof(Brush), typeof(SliderStyle), new PropertyMetadata(null));
+
+
+        #endregion
+
+        #region ShowSliderLines
+
+
+        public bool ShowSliderLines
+        {
+            get { return (bool)GetValue(ShowSliderLinesProperty); }
+            set { SetValue(ShowSliderLinesProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for ShowSliderLines.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty ShowSliderLinesProperty =
+            DependencyProperty.Register("ShowSliderLines", typeof(bool), typeof(SliderStyle), new PropertyMetadata(null));
+
+
+        #endregion
+
         public SliderStyle()
         {
             ThumbBackground = new SolidColorBrush(Color.FromRgb(99,184,239));
             SliderBackground = new SolidColorBrush(Color.FromRgb(0, 17, 33));
             SliderWaveBrush = new SolidColorBrush(Color.FromRgb(80, 148, 211));
             SliderBorderBrush = Brushes.Black;
+            PosLineBrush = Brushes.Yellow;
+            TrackLineBrush = Brushes.Red;
+            ShowSliderLines = true;
         }
     }
 }

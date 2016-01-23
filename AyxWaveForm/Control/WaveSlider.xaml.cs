@@ -64,6 +64,50 @@ namespace AyxWaveForm.Control
 
         #endregion
 
+        #region PosLineBrush
+
+
+        public Brush PosLineBrush
+        {
+            get { return (Brush)GetValue(PosLineBrushProperty); }
+            set { SetValue(PosLineBrushProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for PosLineBrush.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty PosLineBrushProperty =
+            DependencyProperty.Register("PosLineBrush", typeof(Brush), typeof(WaveSlider), new PropertyMetadata(null));
+
+
+        #endregion
+
+        #region TrackLineBrush
+
+
+        public Brush TrackLineBrush
+        {
+            get { return (Brush)GetValue(TrackLineBrushProperty); }
+            set { SetValue(TrackLineBrushProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for TrackLineBrush.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty TrackLineBrushProperty =
+            DependencyProperty.Register("TrackLineBrush", typeof(Brush), typeof(WaveSlider), new PropertyMetadata(null));
+
+
+        #endregion
+
+
+
+        public bool ShowLines
+        {
+            get { return (bool)GetValue(ShowLinesProperty); }
+            set { SetValue(ShowLinesProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for ShowLines.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty ShowLinesProperty =
+            DependencyProperty.Register("ShowLines", typeof(bool), typeof(WaveSlider), new PropertyMetadata(true));
+
 
         #endregion
 
@@ -136,7 +180,16 @@ namespace AyxWaveForm.Control
 
         private void Self_SizeChanged(object sender, SizeChangedEventArgs e)
         {
-            ThumbWidth = this.ActualWidth * Scale;
+            if (e == null) return;
+            try
+            {
+                ThumbWidth = this.ActualWidth * Scale;
+                PosLine.Y2 = TrackLine.Y2 = this.ActualHeight;
+                var k = e.NewSize.Width / e.PreviousSize.Width;
+                PosLine.X1 = PosLine.X2 = PosLine.X1 * k;
+                TrackLine.X1 = TrackLine.X2 = TrackLine.X1 * k;
+            }
+            catch { }
         }
     }
 }

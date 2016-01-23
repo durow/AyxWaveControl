@@ -24,7 +24,10 @@
                 <con:WaveSlider x:Name="MainSlider" DockPanel.Dock="Top" 
                                 SliderMoved="MainSlider_SliderMoved" 
                                 ThumbBackground="{Binding ElementName=Self, Path=SliderStyle.ThumbBackground}"
-                                Height="{Binding ElementName=Self, Path=SliderStyle.SliderHeight}"/>
+                                Height="{Binding ElementName=Self, Path=SliderStyle.SliderHeight}"
+                                PosLineBrush="{Binding ElementName=Self, Path=SliderStyle.PosLineBrush}"
+                                TrackLineBrush="{Binding ElementName=Self, Path=SliderStyle.TrackLineBrush}"
+                                ShowLines="{Binding ElementName=Self, Path=SliderStyle.ShowSliderLines}"/>
             </Border>
             <Border x:Name="WaveBorder" SizeChanged="WaveBorder_SizeChanged" 
                     MouseDown="WaveBorder_MouseDown"
