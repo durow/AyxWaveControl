@@ -180,11 +180,12 @@ namespace AyxWaveForm.Control
 
         private void Self_SizeChanged(object sender, SizeChangedEventArgs e)
         {
-            if (e == null) return;
             try
             {
                 ThumbWidth = this.ActualWidth * Scale;
                 PosLine.Y2 = TrackLine.Y2 = this.ActualHeight;
+
+                if (e == null) return;
                 var k = e.NewSize.Width / e.PreviousSize.Width;
                 PosLine.X1 = PosLine.X2 = PosLine.X1 * k;
                 TrackLine.X1 = TrackLine.X2 = TrackLine.X1 * k;

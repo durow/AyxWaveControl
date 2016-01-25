@@ -399,6 +399,7 @@ namespace AyxWaveForm
                     Status = Status.Stop;
                     TrackLine.Visibility = Visibility.Collapsed;
                     MainSlider.TrackLine.Visibility = Visibility.Collapsed;
+                    MainSlider.TrackLine.X1 = MainSlider.TrackLine.X2 = MainSlider.PosLine.X1;
                     playingTimer.Stop();
                 }
                 catch { }
