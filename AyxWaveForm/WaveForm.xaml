@@ -23,6 +23,7 @@
                     BorderBrush="{Binding ElementName=Self, Path=SliderStyle.SliderBorderBrush}">
                 <con:WaveSlider x:Name="MainSlider" DockPanel.Dock="Top" 
                                 SliderMoved="MainSlider_SliderMoved" 
+                                MouseLeftButtonDown="MainSlider_MouseLeftButtonDown"
                                 ThumbBackground="{Binding ElementName=Self, Path=SliderStyle.ThumbBackground}"
                                 Height="{Binding ElementName=Self, Path=SliderStyle.SliderHeight}"
                                 PosLineBrush="{Binding ElementName=Self, Path=SliderStyle.PosLineBrush}"

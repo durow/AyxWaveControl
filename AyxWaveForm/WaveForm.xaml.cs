@@ -278,22 +278,26 @@ namespace AyxWaveForm
             }
             catch { }
         }
+        private void MovePosLine(double x)
+        {
+            PosLine.X1 = PosLine.X2 = x;
+            PosLine.Visibility = Visibility.Visible;
+            PosLineTime = WaveLeftTime + x * MainSlider.Scale * WavFile.TotalSeconds / MainGrid.ActualWidth;
+            if (Status != Status.Playing)
+            {
+                var ts = TimeSpan.FromSeconds(PosLineTime);
+                MyPlayer.Position = ts;
+                TimeText.Text = ((int)ts.TotalMinutes).ToString("D2") + ":" + ts.Seconds.ToString("D2") + ":" + ts.Milliseconds.ToString("D3");
+            }
+        }
         //Mouse left button down to set the PosLine and PosLineTime 
         private void MainGrid_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             if (WavFile == null) return;
             var x = e.GetPosition(MainGrid).X;
-            SetLinesX(x);
-            PosLine.Visibility = Visibility.Visible;
-            PosLineTime = WaveLeftTime + x * MainSlider.Scale * WavFile.TotalSeconds / MainGrid.ActualWidth;
+            MovePosLine(x);
             var sliderPosLine = PosLineTime * MainSlider.ActualWidth / WavFile.TotalSeconds;
             MainSlider.PosLine.X1 = MainSlider.PosLine.X2 = sliderPosLine;
-            var ts = TimeSpan.FromSeconds(PosLineTime);
-            if (Status != Status.Playing)
-            {
-                MyPlayer.Position = ts;
-                TimeText.Text = ((int)ts.TotalMinutes).ToString("D2") + ":" + ts.Seconds.ToString("D2") + ":" + ts.Milliseconds.ToString("D3");
-            }
         }
         //Mouse right button down to stop play
         private void MainBorder_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
@@ -410,6 +414,19 @@ namespace AyxWaveForm
 
         private void WaveBorder_MouseDown(object sender, MouseButtonEventArgs e)
         {
+        }
+
+        private void MainSlider_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            var x = e.GetPosition(MainSlider).X;
+            MainSlider.MoveThumb(x);
+            if (MainSlider.MySlider.Value == 1)
+            {
+                var pos = (x/MainSlider.ActualWidth - MainSlider.StartPercent) * ActualWidth / MainSlider.Scale;
+                MovePosLine(pos);
+            }
+            else
+                MovePosLine(0);
         }
     }
 

@@ -170,6 +170,12 @@ namespace AyxWaveForm.Control
         {
             SliderImage.Source = img;
         }
+        public void MoveThumb(double x)
+        {
+            if (Scale == 1) return;
+            MySlider.Value = x / (ActualWidth * (1 - Scale));
+            PosLine.X2 = PosLine.X1 = x;
+        }
 
         private void MySlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
