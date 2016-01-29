@@ -3,6 +3,7 @@
  * Date:2016.01.16
  * Description:Used to draw wave data to image
 */
+
 using AyxWaveForm.Format;
 using AyxWaveForm.Model;
 using System;
@@ -17,6 +18,18 @@ namespace AyxWaveForm.Service
 {
     public static class WaveDrawer
     {
+        /// <summary>
+        /// Draw one channel.
+        /// For single channel wave, it draws the channel and wave grid.
+        /// For two channel wave,use this method to draw one channel of two.
+        /// </summary>
+        /// <param name="info">chached sample info</param>
+        /// <param name="waveBrush">wave brush</param>
+        /// <param name="startPer">the percent of start position</param>
+        /// <param name="scale">scale</param>
+        /// <param name="width">width of the return bitmap</param>
+        /// <param name="height">height of the return bitmap</param>
+        /// <returns>bitmap that the wave drawed on</returns>
         public static ImageSource Draw1Channel(PixelInfo[] info,Brush waveBrush,double startPer, double scale,double width, double height=-1)
         {
             if (width <= 0) return null;
@@ -33,8 +46,23 @@ namespace AyxWaveForm.Service
             DrawingVisual dv = new DrawingVisual();
             var dc = dv.RenderOpen();
             var pen = new Pen(waveBrush, 1);
+            var gridPen = new Pen(Brushes.LightBlue, 0.2);
+            gridPen.Freeze();
             pen.Freeze();
-
+            //draw wave grid
+            var hNumber = GetGridNumber(height / 2, 50);
+            var k = height / (2 * hNumber);
+            for (int i = 1; i < hNumber; i++)
+            {
+                dc.DrawLine(gridPen, new Point(0, i * k), new Point(width, i * k));
+                dc.DrawLine(gridPen, new Point(0, height/2 + i * k), new Point(width, height/2 + i * k));
+            }
+            var vNumber = GetGridNumber(width, 100);
+            var vGridSpace = width / vNumber;
+            for (int i = 1; i < vNumber; i++)
+            {
+                dc.DrawLine(gridPen, new Point(i * vGridSpace, 0), new Point(i * vGridSpace, height));
+            }
             //draw wave
             var drawedSample = 0;
             PixelInfo prePixel = null;
@@ -89,6 +117,17 @@ namespace AyxWaveForm.Service
             return bmp;
         }
 
+        /// <summary>
+        /// Draw two channels
+        /// </summary>
+        /// <param name="lInfo">cached samples of the left channel</param>
+        /// <param name="rInfo">cached samples of the right channel</param>
+        /// <param name="waveBrush">wave brush</param>
+        /// <param name="startPer">the percent of the start position</param>
+        /// <param name="scale">scale</param>
+        /// <param name="width">the width of the return bitmap</param>
+        /// <param name="height">the height of the return bitmap</param>
+        /// <returns>bitmap that the wave drawed on</returns>
         public static ImageSource Draw2Channel(PixelInfo[] lInfo, PixelInfo[] rInfo, Brush waveBrush, double startPer, double scale, double width, double height=-1)
         {
             if (width <= 0) return null;
@@ -184,6 +223,12 @@ namespace AyxWaveForm.Service
             return bmp;
         }
 
+        /// <summary>
+        /// draw a bitmap for slider background
+        /// </summary>
+        /// <param name="data">cached samples of the wave</param>
+        /// <param name="waveBrush">wave brush</param>
+        /// <returns></returns>
         public static ImageSource DrawSimple(WaveData data,Brush waveBrush)
         {
             if(data.Channel != null)
@@ -201,9 +246,33 @@ namespace AyxWaveForm.Service
             return null;
         }
 
+        /// <summary>
+        /// scale from WavFile's MinHeight property to the height of the bitmap
+        /// </summary>
+        /// <param name="value">oldValue</param>
+        /// <param name="height">height of the bitmap</param>
+        /// <returns>new value that scaled</returns>
         private static double ScaleToHeight(double value,double height)
         {
             return value * height / WavFile.MinHeight;
+        }
+
+        /// <summary>
+        /// compute the number of grid lines
+        /// </summary>
+        /// <param name="height">height of width</param>
+        /// <param name="minSpace">minimum space between two grid lines</param>
+        /// <returns></returns>
+        private static int GetGridNumber(double height, double minSpace)
+        {
+            var max = 10;
+            for (int i = 2; i < max; i++)
+            {
+                var h = height / i;
+                if (h <= minSpace)
+                    return i;
+            }
+            return max;
         }
     }
 }

@@ -239,6 +239,27 @@ namespace AyxWaveForm
             else
                 line.Visibility = Visibility.Collapsed;
         }
+        private void RefreshWaveGrid(double width, double height)
+        {
+            //WaveGrid.Children.Clear();
+            //var k = height / 10;
+            //if (WavFile.Channels == 1)
+            //{
+            //    for (int i = 1; i < 5; i++)
+            //    {
+            //        var line = new Line();
+            //        line.Stroke = Brushes.AliceBlue;
+            //        line.StrokeThickness = 1;
+            //        line.X1 = 0;
+            //        line.X2 = width;
+            //        line.Y1 = line.Y2 = i * k;
+            //        WaveGrid.Children.Add(line);
+            //    }
+            //}
+            //else
+            //{ }
+
+        }
         //Slider moved or scale changed
         private void MainSlider_SliderMoved(object sender, Model.SliderMovedEventArgs e)
         {
@@ -275,6 +296,7 @@ namespace AyxWaveForm
                 }
                 //refresh MiddleLine
                 RefreshMiddleLines();
+                RefreshWaveGrid(e.NewSize.Width, e.NewSize.Height);
             }
             catch { }
         }
