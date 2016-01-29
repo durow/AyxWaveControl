@@ -1,4 +1,10 @@
-﻿using System;
+﻿/*
+ * Author:durow
+ * Date:2016.01.19
+ * Description:Style of wave
+*/
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -177,7 +183,7 @@ namespace AyxWaveForm.Model
             PosLineBrush = new SolidColorBrush(Color.FromRgb(110, 197, 114));
             TrackLineBrush = new SolidColorBrush(Color.FromRgb(240, 228, 159));
             MiddleLineBrush = new SolidColorBrush(Color.FromRgb(93, 175, 235));
-            GridBrush = Brushes.DarkGreen;
+            GridBrush = Brushes.LightBlue;
             TimeTextBrush = Brushes.White;
         }
     }

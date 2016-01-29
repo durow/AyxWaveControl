@@ -1,7 +1,7 @@
 ﻿/*
  * Author:durow
  * Date:2016.01.16
- * Description:Used to draw wave data to image
+ * Description:Used to draw wave data to ImageSource
 */
 
 using AyxWaveForm.Format;
@@ -24,13 +24,13 @@ namespace AyxWaveForm.Service
         /// For two channel wave,use this method to draw one channel of two.
         /// </summary>
         /// <param name="info">chached sample info</param>
-        /// <param name="waveBrush">wave brush</param>
+        /// <param name="style">style of the wave</param>
         /// <param name="startPer">the percent of start position</param>
         /// <param name="scale">scale</param>
         /// <param name="width">width of the return bitmap</param>
         /// <param name="height">height of the return bitmap</param>
         /// <returns>bitmap that the wave drawed on</returns>
-        public static ImageSource Draw1Channel(PixelInfo[] info,Brush waveBrush,double startPer, double scale,double width, double height=-1)
+        public static ImageSource Draw1Channel(PixelInfo[] info,WaveStyle style, double startPer, double scale,double width, double height=-1)
         {
             if (width <= 0) return null;
             if (info.Length < width)
@@ -45,8 +45,8 @@ namespace AyxWaveForm.Service
 
             DrawingVisual dv = new DrawingVisual();
             var dc = dv.RenderOpen();
-            var pen = new Pen(waveBrush, 1);
-            var gridPen = new Pen(Brushes.LightBlue, 0.2);
+            var pen = new Pen(style.WaveBrush, 1);
+            var gridPen = new Pen(style.GridBrush, 0.2);
             gridPen.Freeze();
             pen.Freeze();
             //draw wave grid
@@ -122,13 +122,13 @@ namespace AyxWaveForm.Service
         /// </summary>
         /// <param name="lInfo">cached samples of the left channel</param>
         /// <param name="rInfo">cached samples of the right channel</param>
-        /// <param name="waveBrush">wave brush</param>
+        /// <param name="style">style of the wave</param>
         /// <param name="startPer">the percent of the start position</param>
         /// <param name="scale">scale</param>
         /// <param name="width">the width of the return bitmap</param>
         /// <param name="height">the height of the return bitmap</param>
         /// <returns>bitmap that the wave drawed on</returns>
-        public static ImageSource Draw2Channel(PixelInfo[] lInfo, PixelInfo[] rInfo, Brush waveBrush, double startPer, double scale, double width, double height=-1)
+        public static ImageSource Draw2Channel(PixelInfo[] lInfo, PixelInfo[] rInfo, WaveStyle style, double startPer, double scale, double width, double height=-1)
         {
             if (width <= 0) return null;
 
@@ -147,8 +147,8 @@ namespace AyxWaveForm.Service
 
             DrawingVisual dv = new DrawingVisual();
             var dc = dv.RenderOpen();
-            var pen = new Pen(waveBrush, 1);
-            var linePen = new Pen(waveBrush, 1);
+            var pen = new Pen(style.WaveBrush, 1);
+            var linePen = new Pen(style.WaveBrush, 1);
             
             pen.Freeze();
 
@@ -227,19 +227,19 @@ namespace AyxWaveForm.Service
         /// draw a bitmap for slider background
         /// </summary>
         /// <param name="data">cached samples of the wave</param>
-        /// <param name="waveBrush">wave brush</param>
+        /// <param name="style">style of the wave</param>
         /// <returns></returns>
-        public static ImageSource DrawSimple(WaveData data,Brush waveBrush)
+        public static ImageSource DrawSimple(WaveData data,WaveStyle style)
         {
             if(data.Channel != null)
             {
-                var img = Draw1Channel(data.Channel, waveBrush, 0, 1, WavFile.MinWidth);
+                var img = Draw1Channel(data.Channel, style, 0, 1, WavFile.MinWidth);
                 img.Freeze();
                 return img;
             }
             else if(data.LeftChannel!=null && data.RightChannel!=null)
             {
-                var img = Draw2Channel(data.LeftChannel, data.RightChannel, waveBrush, 0, 1, WavFile.MinWidth);
+                var img = Draw2Channel(data.LeftChannel, data.RightChannel, style, 0, 1, WavFile.MinWidth);
                 img.Freeze();
                 return img;
             }

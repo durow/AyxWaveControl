@@ -188,10 +188,7 @@ namespace AyxWaveForm
         //Refresh the slider's background image
         private void RefreshSliderImage()
         {
-            Brush b = Brushes.Lime;
-            if (SliderStyle != null)
-                b = SliderStyle.SliderWaveBrush;
-            MainSlider.SetImage(WavFile.DrawSimple(b));
+            MainSlider.SetImage(WavFile.DrawSimple(WaveStyle));
         }
         //Refresh MiddleLines
         private void RefreshMiddleLines()
@@ -213,17 +210,14 @@ namespace AyxWaveForm
         private void DrawWaveImage()
         {
             if (WavFile == null) return;
-            Brush b = Brushes.Lime;
-            if (WaveStyle != null)
-                b = WaveStyle.WaveBrush;
             if (WavFile.Channels == 1)
             {
-                SingleChannelImage.Source = WavFile.DrawChannel(b,MainSlider.StartPercent, MainSlider.Scale, SingleChannel.ActualWidth, SingleChannel.ActualHeight);
+                SingleChannelImage.Source = WavFile.DrawChannel(WaveStyle,MainSlider.StartPercent, MainSlider.Scale, SingleChannel.ActualWidth, SingleChannel.ActualHeight);
             }
             else
             {
-                LeftChannelImage.Source = WavFile.DrawLeftChannel(b, MainSlider.StartPercent, MainSlider.Scale, LeftChannel.ActualWidth, LeftChannel.ActualHeight);
-                RightChannelImage.Source = WavFile.DrawRightChannel(b, MainSlider.StartPercent, MainSlider.Scale, RightChannel.ActualWidth, RightChannel.ActualHeight);
+                LeftChannelImage.Source = WavFile.DrawLeftChannel(WaveStyle, MainSlider.StartPercent, MainSlider.Scale, LeftChannel.ActualWidth, LeftChannel.ActualHeight);
+                RightChannelImage.Source = WavFile.DrawRightChannel(WaveStyle, MainSlider.StartPercent, MainSlider.Scale, RightChannel.ActualWidth, RightChannel.ActualHeight);
             }
         }
         //Check the line's visibility and position when scroll
@@ -238,27 +232,6 @@ namespace AyxWaveForm
             }
             else
                 line.Visibility = Visibility.Collapsed;
-        }
-        private void RefreshWaveGrid(double width, double height)
-        {
-            //WaveGrid.Children.Clear();
-            //var k = height / 10;
-            //if (WavFile.Channels == 1)
-            //{
-            //    for (int i = 1; i < 5; i++)
-            //    {
-            //        var line = new Line();
-            //        line.Stroke = Brushes.AliceBlue;
-            //        line.StrokeThickness = 1;
-            //        line.X1 = 0;
-            //        line.X2 = width;
-            //        line.Y1 = line.Y2 = i * k;
-            //        WaveGrid.Children.Add(line);
-            //    }
-            //}
-            //else
-            //{ }
-
         }
         //Slider moved or scale changed
         private void MainSlider_SliderMoved(object sender, Model.SliderMovedEventArgs e)
@@ -296,7 +269,6 @@ namespace AyxWaveForm
                 }
                 //refresh MiddleLine
                 RefreshMiddleLines();
-                RefreshWaveGrid(e.NewSize.Width, e.NewSize.Height);
             }
             catch { }
         }

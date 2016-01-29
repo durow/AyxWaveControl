@@ -196,27 +196,27 @@ namespace AyxWaveForm.Format
             MinScale = (double)MinWidth / (double)MaxWidth;
         }
 
-        public ImageSource DrawChannel(Brush waveBrush,double startPer, double scale, double width,double height)
+        public ImageSource DrawChannel(WaveStyle style,double startPer, double scale, double width,double height)
         {
             if (Channels == 1)
-                return WaveDrawer.Draw1Channel(CacheData.Channel, waveBrush,startPer,scale,width,height);
+                return WaveDrawer.Draw1Channel(CacheData.Channel, style,startPer,scale,width,height);
             else
-                return WaveDrawer.Draw2Channel(CacheData.LeftChannel, CacheData.RightChannel, waveBrush,startPer,scale,width,height);
+                return WaveDrawer.Draw2Channel(CacheData.LeftChannel, CacheData.RightChannel, style,startPer,scale,width,height);
         }
 
-        public ImageSource DrawLeftChannel(Brush waveBrush, double startPer, double scale, double width, double height)
+        public ImageSource DrawLeftChannel(WaveStyle style, double startPer, double scale, double width, double height)
         {
-            return WaveDrawer.Draw1Channel(CacheData.LeftChannel, waveBrush, startPer, scale, width, height);
+            return WaveDrawer.Draw1Channel(CacheData.LeftChannel, style, startPer, scale, width, height);
         }
 
-        public ImageSource DrawRightChannel(Brush waveBrush, double startPer, double scale, double width, double height)
+        public ImageSource DrawRightChannel(WaveStyle style, double startPer, double scale, double width, double height)
         {
-            return WaveDrawer.Draw1Channel(CacheData.RightChannel, waveBrush, startPer, scale, width, height);
+            return WaveDrawer.Draw1Channel(CacheData.RightChannel, style, startPer, scale, width, height);
         }
 
-        public ImageSource DrawSimple(Brush waveBrush)
+        public ImageSource DrawSimple(WaveStyle style)
         {
-            return WaveDrawer.DrawSimple(CacheData, waveBrush);
+            return WaveDrawer.DrawSimple(CacheData, style);
         }
 
         #endregion
