@@ -3,6 +3,7 @@
  * Date:2016.01.15
  * Description:Read the wavfile head information. 
  */
+
 using AyxWaveForm.Model;
 using AyxWaveForm.Service;
 using System;
@@ -172,6 +173,11 @@ namespace AyxWaveForm.Format
             return file;
         }
 
+        /// <summary>
+        /// Read the wavfile and cache the sample data to WaveData
+        /// </summary>
+        /// <param name="stream">stream of the wavfile</param>
+        /// <param name="cacheFile">Save the sample data to a cache file</param>
         public void ReadCacheData(Stream stream=null,string cacheFile="")
         {
             if (string.IsNullOrEmpty(cacheFile))
@@ -196,6 +202,15 @@ namespace AyxWaveForm.Format
             MinScale = (double)MinWidth / (double)MaxWidth;
         }
 
+        /// <summary>
+        /// Draw channel
+        /// </summary>
+        /// <param name="style">wave style</param>
+        /// <param name="startPer">the percent of start position</param>
+        /// <param name="scale">scale</param>
+        /// <param name="width">width of the bitmap</param>
+        /// <param name="height">height of the bitmap</param>
+        /// <returns>bitmap that the wave drawed on</returns>
         public ImageSource DrawChannel(WaveStyle style,double startPer, double scale, double width,double height)
         {
             if (Channels == 1)
@@ -204,16 +219,39 @@ namespace AyxWaveForm.Format
                 return WaveDrawer.Draw2Channel(CacheData.LeftChannel, CacheData.RightChannel, style,startPer,scale,width,height);
         }
 
+        /// <summary>
+        /// Draw left channel if the wavfile is 2 channels
+        /// </summary>
+        /// <param name="style">wave style</param>
+        /// <param name="startPer">percent of the start position</param>
+        /// <param name="scale">scale</param>
+        /// <param name="width">width of the bitmap</param>
+        /// <param name="height">height of the bitmap</param>
+        /// <returns>the bitmap that the wave drawed on</returns>
         public ImageSource DrawLeftChannel(WaveStyle style, double startPer, double scale, double width, double height)
         {
             return WaveDrawer.Draw1Channel(CacheData.LeftChannel, style, startPer, scale, width, height);
         }
 
+        /// <summary>
+        /// Draw right channel if the wavfile is 2 channels
+        /// </summary>
+        /// <param name="style">wave style</param>
+        /// <param name="startPer">percent of the start position</param>
+        /// <param name="scale">scale</param>
+        /// <param name="width">width of the bitmap</param>
+        /// <param name="height">height of the bitmap</param>
+        /// <returns>the bitmap that the wave drawed on</returns>
         public ImageSource DrawRightChannel(WaveStyle style, double startPer, double scale, double width, double height)
         {
             return WaveDrawer.Draw1Channel(CacheData.RightChannel, style, startPer, scale, width, height);
         }
 
+        /// <summary>
+        /// Draw a simple wave used for WaveSlider's background
+        /// </summary>
+        /// <param name="style">wave style</param>
+        /// <returns>the bitmap that the wave drawed on</returns>
         public ImageSource DrawSimple(WaveStyle style)
         {
             return WaveDrawer.DrawSimple(CacheData, style);

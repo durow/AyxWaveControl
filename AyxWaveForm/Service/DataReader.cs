@@ -1,4 +1,10 @@
-﻿using AyxWaveForm.Format;
+﻿/*
+ * Author:durow
+ * Date:2016.01.19
+ * Description:Read wavfile's sample data and cache to WaveData
+*/
+
+using AyxWaveForm.Format;
 using AyxWaveForm.Model;
 using System;
 using System.Collections.Generic;
