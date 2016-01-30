@@ -8,6 +8,7 @@ using AyxWaveForm.Format;
 using AyxWaveForm.Model;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Windows;
@@ -223,6 +224,17 @@ namespace AyxWaveForm.Service
             return bmp;
         }
 
+        public static ImageSource Draw1Channel(WavFile wavFile, WaveStyle style, double startPer,double scale, double width, double height)
+        {
+            using (var stream = File.Open(wavFile.FileName, FileMode.Open))
+            {
+                using (var reader = new BinaryReader(stream))
+                {
+
+                }
+            }
+            return null;
+        }
         /// <summary>
         /// draw a bitmap for slider background
         /// </summary>
