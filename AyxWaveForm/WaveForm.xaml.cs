@@ -281,10 +281,11 @@ namespace AyxWaveForm
             PosLine.X1 = PosLine.X2 = x;
             PosLine.Visibility = Visibility.Visible;
             PosLineTime = WaveLeftTime + x * MainSlider.Scale * WavFile.TotalSeconds / MainGrid.ActualWidth;
+            var ts = TimeSpan.FromSeconds(PosLineTime);
+            MyPlayer.Position = ts;
             if (Status != Status.Playing)
             {
-                var ts = TimeSpan.FromSeconds(PosLineTime);
-                MyPlayer.Position = ts;
+                
                 TimeText.Text = ((int)ts.TotalMinutes).ToString("D2") + ":" + ts.Seconds.ToString("D2") + "." + ts.Milliseconds.ToString("D3");
             }
         }
@@ -334,8 +335,16 @@ namespace AyxWaveForm
             RefreshMiddleLines();
             MyPlayer.Source = new Uri(filename);
             MyPlayer.Play();
-            if (!AutoStart) MyPlayer.Stop();
-            Status = Status.Ready;
+            Status = Status.Stop;
+            MyPlayer.Stop();
+
+            if (!AutoStart)
+            {
+            }
+            else
+            {
+                Play();
+            }
             if (FileLoaded != null)
                 FileLoaded(this, EventArgs.Empty);
         }

@@ -24,6 +24,7 @@ namespace AyxPlayer
         public MainWindow()
         {
             InitializeComponent();
+            MyWaveForm.AutoStart = true;
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
