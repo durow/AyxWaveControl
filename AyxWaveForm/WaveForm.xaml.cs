@@ -193,6 +193,9 @@ namespace AyxWaveForm
         //Refresh MiddleLines
         private void RefreshMiddleLines()
         {
+            if (WavFile == null)
+                return;
+
             if (WavFile.Channels == 1)
             {
                 SingleMiddleLine.Y1 = SingleMiddleLine.Y2 = WaveGrid.ActualHeight / 2;
