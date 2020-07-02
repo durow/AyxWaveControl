@@ -159,6 +159,7 @@ namespace AyxWaveForm
             PosLineTime = 0;
             TrackLineTime = 0;
             WaveLeftTime = 0;
+            TimeText.Text = "00:00.000";
         }
         //Set the X1 and X2 property of PosLine and TrackLine
         private void SetLinesX(double x)
@@ -284,7 +285,7 @@ namespace AyxWaveForm
             {
                 var ts = TimeSpan.FromSeconds(PosLineTime);
                 MyPlayer.Position = ts;
-                TimeText.Text = ((int)ts.TotalMinutes).ToString("D2") + ":" + ts.Seconds.ToString("D2") + ":" + ts.Milliseconds.ToString("D3");
+                TimeText.Text = ((int)ts.TotalMinutes).ToString("D2") + ":" + ts.Seconds.ToString("D2") + "." + ts.Milliseconds.ToString("D3");
             }
         }
         //Mouse left button down to set the PosLine and PosLineTime 
